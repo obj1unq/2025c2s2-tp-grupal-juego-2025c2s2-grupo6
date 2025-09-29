@@ -1,5 +1,12 @@
 import wollok.game.*
+import personaje.*
 
 program fallToPieces{
+    game.width(7)
+    game.height(10)
+    game.cellSize(50)
+    game.title("fall to pieces")
+    //game.boardGround(image)
+    game.addVisual(personaje)
     game.start()
 }
