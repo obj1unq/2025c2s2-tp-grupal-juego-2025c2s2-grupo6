@@ -2,15 +2,14 @@ import wollok.game.*
 import obstaculos.*
 
 object personaje {
-  var property position = game.origin()
+  var property position = game.at(3,0)
   var property image = "lionel-titular.png"
-  method mover() {
-    //self.validarMovimiento()
-    position = game.at(position.x()+1, 0)
+
+  method izquierda() {
+	position = game.at(1.max(position.x() - 1), position.y()) 
   }
-  method validarMoviemiento() {
-    if (position == game.width()-1){
-        self.error("no puedo moverme")
-    }
+	
+  method derecha() {
+	position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
   }
 }

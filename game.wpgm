@@ -10,10 +10,10 @@ program fallToPieces{
     game.title("fall to pieces")
     // game.boardGround(image)
     game.addVisual(personaje)
+    keyboard.d().onPressDo{personaje.derecha()}
+    keyboard.a().onPressDo{personaje.izquierda()}
     game.addVisual(obstaculo)
-    
     game.onTick(1000, "caer", {obstaculo.caer()})
-    
     game.start()
     
 
