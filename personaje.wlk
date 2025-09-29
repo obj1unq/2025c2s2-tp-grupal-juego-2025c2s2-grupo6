@@ -1,4 +1,6 @@
 import wollok.game.*
+import obstaculos.*
+
 object personaje {
   var property position = game.origin()
   var property image = "lionel-titular.png"
