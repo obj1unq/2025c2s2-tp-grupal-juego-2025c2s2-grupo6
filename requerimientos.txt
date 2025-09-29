@@ -1,0 +1,10 @@
+Ganar el juego
+
+bloques que bajan
+
+personaje 
+    --agacharse
+    saltar
+    mover solo eje x  
+    // agregar poder para romper objetos
+
