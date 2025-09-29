@@ -13,7 +13,7 @@ program fallToPieces{
     keyboard.d().onPressDo{personaje.derecha()}
     keyboard.a().onPressDo{personaje.izquierda()}
     game.addVisual(obstaculo)
-    game.onTick(1000, "caer", {obstaculo.caer()})
+    game.onTick(100, "caer", {obstaculo.caer()})
     game.start()
     
 
