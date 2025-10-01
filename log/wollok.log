@@ -1504,4 +1504,13 @@
 {"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":166,"timestamp":"2025-09-29T15:03:15.239Z"}
 {"level":"info","message":"⌛ Building environment","timeElapsed":194,"timestamp":"2025-09-29T15:03:16.680Z"}
 {"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":202,"timestamp":"2025-09-29T15:03:16.992Z"}
-{"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":203,"timestamp":"2025-09-29T15:03:17.196Z"}
+{"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":203,"timestamp":"2025-09-29T15:03:17.196Z"}{"level":"info","message":"⌛ Building environment","timeElapsed":1354,"timestamp":"2025-10-01T13:18:36.200Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":1362,"timestamp":"2025-10-01T13:18:37.570Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":1037,"timestamp":"2025-10-01T13:18:38.682Z"}
+{"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":2705,"timestamp":"2025-10-01T13:18:41.392Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":1218,"timestamp":"2025-10-01T13:18:42.617Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":558,"timestamp":"2025-10-01T13:18:43.547Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":3036,"timestamp":"2025-10-01T13:18:46.588Z"}
+{"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":934,"timestamp":"2025-10-01T13:18:48.056Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":447,"timestamp":"2025-10-01T13:18:48.505Z"}
+{"level":"info","message":"⌛ Validating obstaculos.wlk","timeElapsed":641,"timestamp":"2025-10-01T13:18:49.146Z"}

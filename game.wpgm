@@ -4,16 +4,25 @@ import obstaculos.*
 
 
 program fallToPieces{
+    //CONFIG
+    game.title("fall to pieces")
     game.width(7)
     game.height(10)
     game.cellSize(50)
-    game.title("fall to pieces")
+
+    //VISUALES
     // game.boardGround(image)
     game.addVisual(personaje)
+    game.addVisual(obstaculo)
+
+    //TECLADO
     keyboard.d().onPressDo{personaje.derecha()}
     keyboard.a().onPressDo{personaje.izquierda()}
-    game.addVisual(obstaculo)
+
+    //EFECTO 
     game.onTick(100, "caer", {obstaculo.caer()})
+
+    //COMENZAR JUEGO 
     game.start()
     
 
