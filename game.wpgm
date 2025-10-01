@@ -11,9 +11,10 @@ program fallToPieces{
     game.cellSize(50)
 
     //VISUALES
-    // game.boardGround(image)
+    game.boardGround("fondo1.png")
     game.addVisual(personaje)
     game.addVisual(obstaculo)
+    game.addVisual(cura)
 
     //TECLADO
     keyboard.d().onPressDo{personaje.derecha()}
@@ -21,6 +22,10 @@ program fallToPieces{
 
     //EFECTO 
     game.onTick(100, "caer", {obstaculo.caer()})
+    game.onTick(100, "caer", {cura.caer()})
+
+    game.whenCollideDo(personaje, {elemento => elemento.chocarConEfecto(personaje)
+                                                game.say(personaje, personaje.obtenerCura())})
 
     //COMENZAR JUEGO 
     game.start()

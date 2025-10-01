@@ -4,7 +4,9 @@ import obstaculos.*
 object personaje {
   var property position = game.at(3,0)
   var property image = "lionel-titular.png"
+  var property vida  = 100
 
+  method obtenerCura() = "Cura obtenida"
   method izquierda() {
 	position = game.at(1.max(position.x() - 1), position.y()) 
   }
