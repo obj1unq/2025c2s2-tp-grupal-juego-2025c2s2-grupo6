@@ -884,3 +884,4 @@
 {"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":315,"timestamp":"2025-10-01T14:45:44.809Z"}
 {"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":321,"timestamp":"2025-10-01T14:45:45.146Z"}
 {"exitCode":"SIGHUP","level":"info","message":"👾 Game executed game.fallToPieces on f:\\ProyectosPO1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6-1","timeElapsed":506302,"timestamp":"2025-10-01T14:46:33.608Z"}
+{"level":"info","message":"🚀 Program executed \u001b[3m\u001b[34mgame.fallToPieces\u001b[39m\u001b[23m on \u001b[3m\u001b[34mf:\\ProyectosPO1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6-1\u001b[39m\u001b[23m","ok":true,"timeElapsed":1723,"timestamp":"2025-10-01T14:46:56.303Z"}
