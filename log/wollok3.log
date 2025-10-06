@@ -2412,3 +2412,19 @@
 {"level":"info","message":"⌛ Validating obstaculos.wlk","timeElapsed":405,"timestamp":"2025-10-05T02:01:22.170Z"}
 {"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":801,"timestamp":"2025-10-05T02:01:22.999Z"}
 {"level":"info","message":"⌛ Validating objetos.wlk","timeElapsed":258,"timestamp":"2025-10-05T02:01:23.258Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":436,"timestamp":"2025-10-05T20:00:25.241Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":758,"timestamp":"2025-10-05T20:00:26.183Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":303,"timestamp":"2025-10-05T20:00:26.487Z"}
+{"level":"info","message":"⌛ Autocomplete - Singleton","timeElapsed":177,"timestamp":"2025-10-05T20:00:26.666Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":342,"timestamp":"2025-10-05T20:00:27.020Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":214,"timestamp":"2025-10-05T20:00:27.239Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":231,"timestamp":"2025-10-05T20:00:27.494Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":321,"timestamp":"2025-10-05T20:00:27.941Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":214,"timestamp":"2025-10-05T20:00:28.157Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":367,"timestamp":"2025-10-05T20:00:28.525Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":663,"timestamp":"2025-10-05T20:00:29.202Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":545,"timestamp":"2025-10-05T20:00:29.755Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":461,"timestamp":"2025-10-05T20:00:30.301Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":287,"timestamp":"2025-10-05T20:00:30.591Z"}
+{"level":"info","message":"⌛ Validating personaje.wlk","timeElapsed":244,"timestamp":"2025-10-05T20:00:30.857Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":221,"timestamp":"2025-10-05T20:00:31.118Z"}

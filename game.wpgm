@@ -14,10 +14,10 @@ program fallToPieces{
     //VISUALES
     game.boardGround("fondo1.png")
     game.addVisual(personaje)
-    game.addVisual(obstaculo)
+    game.addVisual(ascuas)
     game.addVisual(pocion)
     game.addVisual(escudoMagico)
-//  game.addVisual(piedraPreciosa)
+    game.addVisual(piedraPreciosa)
 //  game.addVisual(diamanteValioso)
 
 
@@ -26,18 +26,19 @@ program fallToPieces{
     keyboard.a().onPressDo{personaje.izquierda()}
 
     //EFECTO 
-    game.onTick(100, "caer", {obstaculo.caer()})
+    game.onTick(100, "caer", {ascuas.caer()})
     game.onTick(100, "caer", {pocion.caer()})
     game.onTick(100, "caer", {escudoMagico.caer()})
-//  game.onTick(100, "caer", {piedraPreciosa.caer()})
+    game.onTick(100, "caer", {piedraPreciosa.caer()})
 //  game.onTick(100, "caer", {diamanteValioso.caer()})
 
 
-    game.whenCollideDo(personaje, {elemento => elemento.chocarConEfecto(personaje)
-                                                game.say(personaje, personaje.obtenerCura())})
+    game.whenCollideDo(personaje, {elemento => elemento.chocarConEfecto(personaje)})
 
     //COMENZAR JUEGO 
-    game.start()
-    
 
+    const musicaPrincipal = game.sound("elcaminoDelMago.mp3")
+    musicaPrincipal.shouldLoop(true)
+    game.schedule(500, { musicaPrincipal.play()} )
+    game.start()
 }

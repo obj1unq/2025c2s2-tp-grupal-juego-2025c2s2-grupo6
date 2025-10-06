@@ -1,7 +1,8 @@
 import wollok.game.*
 import personaje.*
+import objetos.*
 
-object controladorDeCaida {
+/*object controladorDeCaida {
   var columnasDisponibles = [0, 1, 2, 3, 4]
   method obtenerColumnaAleatoria() {
     if (columnasDisponibles.isEmpty()) {
@@ -11,10 +12,23 @@ object controladorDeCaida {
     columnasDisponibles.remove(columna)
     return columna
   }
-}
-object obstaculo{
+}*/
+object ascuas{
     var property position = game.at(2,10)
-    var property image = "pelota.png"
+    var property image = "ascuas.gif"
+
+    method play(){
+    game.sound("ascuas.mp3").play()
+    }
+
+    method chocarConEfecto(objeto) {
+      //Prop: realizar un efecto sobre el objeto colisionado
+        self.play()
+        if (not objeto.tieneEscudoActivo()){
+          objeto.recibirDaño(40)
+          objeto.detenerJuegoSiEstoyMuerto()
+        }
+    }
 
     method caer() {
       if (position.y() != 0){

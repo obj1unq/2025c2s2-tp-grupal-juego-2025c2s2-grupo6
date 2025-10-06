@@ -5,8 +5,35 @@ object personaje {
   var property position = game.at(3,0)
   var property image = "lionel-titular.png"
   var property vida  = 100
+  var property puntosObtenidos = 0  
+  var property tieneEscudoActivo = false 
 
-  method obtenerCura() = "Cura obtenida"
+  method estoyMuerto() = self.vida() <= 0 
+  //Verificar si la vida es menor o igual a 0
+  
+  method recibirDaño(cantidad) {
+    //Reducir la vida del personaje tanto como la cantidad dada si no tiene el escudo activo en ese momento
+    if (not self.tieneEscudoActivo()){
+      self.vida(self.vida() - cantidad)
+    }
+  }
+
+  method verificarSiGane() = self.puntosObtenidos() >= 1000
+  
+
+  method detenerJuegoSiGane(){ 
+    if (self.verificarSiGane()){
+      game.say(self, "YOU WIN")
+      game.stop()
+    }
+  }
+  method detenerJuegoSiEstoyMuerto() {
+    //Prop: detener el juego si la vida del jugador disminuye a 0
+    if (self.estoyMuerto()){
+      game.say(self,"GAME OVER")
+      game.stop()
+    }
+  }
   method izquierda() {
 	position = game.at(1.max(position.x() - 1), position.y()) 
   }
