@@ -45,7 +45,22 @@ object _ {
   }
 }
 
-
+object algo2 {
+  const colecciones = #{p,p,l,l,_,a,_,_,l}
+  const patrones = #{[p,l,l,_,_,p],
+                     [_,l,l,l,_,p],
+                     [p,_,l,_,a,p],
+                     [_,l,l,_,_,l],
+                     [_,p,l,_,l,_],
+                     [_,p,p,p,p,_],
+                     [_,a,_,a,_,a]}
+  method inicializar() {
+    self.añadirObstaculos(patrones.anyOne())
+  }
+  method añadirObstaculos(patron) {
+    (1..patron.size()-1).forEach({x => patron.get(x).crear(game.at(x,10))})
+  }
+}
 object algoritmo {
   const patrones = #{[p,l,l,_,_,p],
                      [_,l,l,l,_,p],
