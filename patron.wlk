@@ -6,12 +6,25 @@ class Patron  {
   method añadirObstaculos(patron) {
     (1..patron.size()-1).forEach({x => visuales.add(patron.get(x).crear(game.at(x,10)))})
   }
-  method start() {
-    visuales.forEach({visual => game.addVisual(visual) visual.caida()})
-    game.schedule(11000, {self.stop()})
+  method startPatron() {
+    visuales.forEach({visual => 
+      game.addVisual(visual) 
+    })
+    self.caida()
+  }
+  method caida() {
+    game.onTick(700, self.identity(), {self.caerObjetos()})
+  }
+  method caerObjetos() {
+    if (visuales.anyOne().position().y() != 0){
+      visuales.forEach({visual => visual.caer()})  
+    }else{
+      visuales.forEach({visual => visual.ocultar()})
+      self.stop()
+    }
   }
   method stop() {
-    visuales.forEach({visual => visual.ocultar()})
+    game.removeTickEvent(self.identity())
   }
 }
 

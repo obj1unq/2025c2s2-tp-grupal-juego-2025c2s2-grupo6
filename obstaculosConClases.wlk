@@ -16,7 +16,8 @@ object clavesDeUso {
 
 class Obstaculo{
   var property position
-  const clave = clavesDeUso.darClave()
+  
+  const clave = self.identity()
 
   method caida() {
       game.onTick(1000, clave, {self.caer()})
@@ -30,7 +31,6 @@ class Obstaculo{
     position = game.at(position.x(), 10)
     game.removeVisual(self)
     game.removeTickEvent(clave) 
-    clavesDeUso.agregarClave(clave)
   }
 }
 
@@ -56,14 +56,14 @@ class Ascuas inherits Obstaculo{
 class CajaNegra inherits Obstaculo {
   var property image = "aaa.png"
 
-  method chocarConEfecto() {
+  method chocarConEfecto(p) {
     image = "aaa.png"
   }
 }
 
 class Lava inherits Obstaculo{
   var property image = "lava.png"
-  method chocarConEfecto() {
+  method chocarConEfecto(p) {
     image = "aaa.png"
   }
 
@@ -72,15 +72,15 @@ class Lava inherits Obstaculo{
 class Pared inherits Obstaculo{
   var property image = "aaa.png"
 
-  method chocarConEfecto() {
+  method chocarConEfecto(p) {
     image = "aaa.png"
   }
 }
 class Vacio inherits Obstaculo{
   var property image = ""
 
-  method chocarConEfecto() {
-
+  method chocarConEfecto(p) {
+     
   }
 }
 

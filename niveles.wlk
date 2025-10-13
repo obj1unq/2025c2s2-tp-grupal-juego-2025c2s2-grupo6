@@ -14,19 +14,32 @@ class Nivel {
   method siguienteNivel() {
     return siguienteNivel
   }
-
-  method start() {
-    //construyo los patrones
-    setupDelNivel.forEach({setup => const pat = patronFactory.crear() pat.añadirObstaculos(setup) patronesDelNivel.add(pat)})
-    //llamo a un patron distinto cada 3 segundos
+  method comenzarACaer() {
     game.onTick(3000, "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
   }
-  method mostrarNuevoPatron() {
-    //agarro cualquier patron de la lista de patrones
-    patronesDelNivel.anyOne().start()
+  method start() {
+    //construyo los patrones
+    setupDelNivel.forEach({setup => self.crearPatron(setup)})
+    //llamo a un patron distinto cada 3 segundosv
+  }
+  method crearPatron(setup) {
+    const pat = patronFactory.crear() 
+    pat.añadirObstaculos(setup)
+    patronesDelNivel.add(pat)
   }
 
-  method añadirPersonaje() {          // invoca al personaje.
+  method mostrarNuevoPatron() {
+    //agarro cualquier patron de la lista de patrones
+    const patron = patronesDelNivel.anyOne()
+    if (game.hasVisual(patron.visuales().anyOne())){ 
+      self.mostrarNuevoPatron()
+    }
+    else{
+      patron.startPatron()
+    }
+  }
+
+  method añadirPersonaje() {          // invoca al personaje.v
     game.addVisual(personaje)
     keyboard.d().onPressDo{personaje.derecha()}
     keyboard.a().onPressDo{personaje.izquierda()}
@@ -36,6 +49,7 @@ class Nivel {
   method inicializar() {        //inicializador del nivel.
     self.añadirPersonaje()
     self.start()
+    self.comenzarACaer()
     //algoritmo.level1()
   }
 }

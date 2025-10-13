@@ -13,6 +13,7 @@ object fallToPieces{
         game.schedule(500, { musicaPrincipal.play()} )
         musicaPrincipal.volume(0.5)
         nivelActual.inicializar()
+        //objeto configurarControles
     }
 }
 
