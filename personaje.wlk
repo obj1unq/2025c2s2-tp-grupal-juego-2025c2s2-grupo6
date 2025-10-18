@@ -14,6 +14,14 @@ object personaje {
   method estoyMuerto() = self.vida() <= 0 
   //Verificar si la vida es menor o igual a 0
   
+  method curar() {
+        if (vida >= 75){
+            vida = 100
+        }else{
+            vida =+ 25
+        }
+  }
+
   method recibirDaño(cantidad) {
     //Reducir la vida del personaje tanto como la cantidad dada si no tiene el escudo activo en ese momento
     if (not self.tieneEscudoActivo()){
@@ -22,16 +30,15 @@ object personaje {
     }
   }
 
-  method verificarSiGane() = self.puntosObtenidos() >= 1000
-  
-
-  method detenerJuegoSiGane(){ 
-    if (self.verificarSiGane()){
-      game.say(self, "YOU WIN")
-      //fallToPieces.nivelActual(fallToPieces.nivelActual.siguienteNivel())
+  method obtenerPuntos(puntos) {
+    if (puntosObtenidos >= 1000){
+      game.say(self, "You WIN!!")
       game.stop()
+    }else{
+      puntosObtenidos += puntos
     }
   }
+  
   method detenerJuegoSiEstoyMuerto() {
     //Prop: detener el juego si la vida del jugador disminuye a 0
     if (self.estoyMuerto()){
