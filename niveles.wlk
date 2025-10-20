@@ -2,7 +2,8 @@ import personaje.*
 import wollok.game.*
 import obstaculosConClases.*
 import objetos.*
-
+import tableroJugable.*
+/*
 object p {
   method crearInstancia(position) {
     return new Pared(position = position)
@@ -36,30 +37,31 @@ object _ {
     
   }
 }
-
+*/
 
 class Nivel {
   //const property comenzarNivel 
   const property siguienteNivel 
   const property objetosDelNivel
-  const property programaciones
-  const property programaciones2
-  const property posicionesObstaculos
+  //const property programaciones
+  //const property programaciones2
+  //const property posicionesObstaculos
 
   method siguienteNivel() {
     return siguienteNivel
   }
+  
+  /*
   method incializarPosicionesObstaculos() {
     (0..posicionesObstaculos.size()-1).forEach({x => 
                                       (0..posicionesObstaculos.get(x).size()-1).forEach({y => 
                                                               posicionesObstaculos.get(x).get(y).crear(game.at(y,10),programaciones.get(x).get(y))})})
-  /*
   2da implementacion
   (0..posicionesObstaculos.size()-1).forEach({x => 
                                       (0..posicionesObstaculos.get(x).size()-1).forEach({y => 
                                                               posicionesObstaculos.get(x).get(y).crear(game.at(y,10),programaciones2.anyOne())})})
-  */
   }
+  */
   method personaje() {          // invoca al personaje.
     game.addVisual(personaje)
     keyboard.d().onPressDo{personaje.derecha()}
@@ -74,12 +76,17 @@ class Nivel {
   }
   method inicializar() {        //inicializador del nivel.
     self.personaje()
+    algoritmo.level1()
     //self.añadirObstaculos()
-    self.incializarPosicionesObstaculos()
+    //self.incializarPosicionesObstaculos()
     //self.añadirObjetos() 
   }
 }
-
+const nivel1 = new Nivel(
+  objetosDelNivel = #{pocion, escudoMagico, piedraPreciosa},
+  siguienteNivel = final
+)
+/*
 const nivel1 = new Nivel( 
     objetosDelNivel = #{pocion, escudoMagico, piedraPreciosa},
     //implementacion2
@@ -101,7 +108,7 @@ const nivel1 = new Nivel(
                             [_,p,l,c,_,_]],
     siguienteNivel  = final
 )
-
+*/
 object final {
   const property position = game.origin()
   const property image = "fintest.jpg"
