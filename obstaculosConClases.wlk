@@ -13,10 +13,29 @@ object clavesDeUso {
     claves.add(clave)
   }
 }
-class Ascuas{
-    var property position
+
+class Obstaculo{
+  var property position
+  const clave = clavesDeUso.darClave()
+
+  method caida() {
+      game.onTick(1000, clave, {self.caer()})
+  }
+  method caer() {
+      if (position.y() != 0){
+          position = game.at(position.x(), position.y()-1)
+      }
+  }
+  method ocultar() {
+    position = game.at(position.x(), 10)
+    game.removeVisual(self)
+    game.removeTickEvent(clave) 
+    clavesDeUso.agregarClave(clave)
+  }
+}
+
+class Ascuas inherits Obstaculo{
     var property image = "ascuas.gif"
-    const clave = clavesDeUso.darClave()
 
     method play(){
     game.sound("ascuas.mp3").play()
@@ -32,65 +51,72 @@ class Ascuas{
           objeto.detenerJuegoSiEstoyMuerto()
         }
     }
-    method caida() {
-      game.onTick(200, clave, {self.caer()})
-    }
-
-    method caer() {
-      if (position.y() != 0){
-        position = game.at(position.x(), position.y()-1)
-      }else{game.removeVisual(self) game.removeTickEvent(clave) clavesDeUso.agregarClave(clave)}
-    }
 }
 
-class CajaNegra {
-  var property position
+class CajaNegra inherits Obstaculo {
   var property image = "aaa.png"
-  const clave = clavesDeUso.darClave()
-  method colision() {
+
+  method chocarConEfecto() {
     image = "aaa.png"
   }
-  method caida() {
-      game.onTick(200, clave, {self.caer()})
-  }
-    method caer() {
-      if (position.y() != 0){
-          position = game.at(position.x(), position.y()-1)
-      }else{game.removeVisual(self) game.removeTickEvent(clave) clavesDeUso.agregarClave(clave)}
-    }
 }
 
-class Lava {
-  var property position 
+class Lava inherits Obstaculo{
   var property image = "lava.png"
-  const clave = clavesDeUso.darClave()
-  method colision() {
+  method chocarConEfecto() {
     image = "aaa.png"
   }
-  method caida() {
-      game.onTick(200, clave, {self.caer()})
-  }
-    method caer() {
-      if (position.y() != 0){
-          position = game.at(position.x(), position.y()-1)
-      }else{game.removeVisual(self) game.removeTickEvent(clave) clavesDeUso.agregarClave(clave)}
-    }
+
 }
 
-class Pared {
-  var property position 
+class Pared inherits Obstaculo{
   var property image = "aaa.png"
-  const clave = clavesDeUso.darClave()
-  method colision() {
+
+  method chocarConEfecto() {
     image = "aaa.png"
   }
-  method caida() {
-      game.onTick(200, clave, {self.caer()})
+}
+class Vacio inherits Obstaculo{
+  var property image = ""
+
+  method chocarConEfecto() {
+
   }
-    method caer() {
-      if (position.y() != 0){
-          position = game.at(position.x(), position.y()-1)
-      }
-      else{game.removeVisual(self) game.removeTickEvent(clave) clavesDeUso.agregarClave(clave)}
-    }
+}
+
+
+object p {
+  method crear(position) {
+    const obj = new Pared(position = position) 
+    return obj
+  }
+}
+
+object l {
+  method crear(position) {
+    const obj = new Lava(position = position) 
+    return obj
+  }
+}
+
+object c {
+    
+  method crear(position) {
+    const obj = new CajaNegra(position = position) 
+    return obj
+  }
+}
+object a {
+    
+  method crear(position) {
+    const obj = new Ascuas(position = position) 
+    return obj
+  }
+}
+
+object _ {
+  method crear(position) {
+    const obj = new Vacio(position = position) 
+    return obj
+  }
 }
