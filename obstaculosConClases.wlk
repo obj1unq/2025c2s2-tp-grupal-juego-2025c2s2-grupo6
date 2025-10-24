@@ -20,7 +20,7 @@ class Obstaculo{
   const clave = self.identity()
 
   method caida() {
-      game.onTick(1000, clave, {self.caer()})
+      game.onTick(300, clave, {self.caer()})
   }
   method caer() {
       if (position.y() != 0){
@@ -44,7 +44,7 @@ class Ascuas inherits Obstaculo{
     method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
         game.removeVisual(self)
-        game.schedule(5000, {game.addVisual(self)})
+        //game.schedule(5000, {game.addVisual(self)})
         self.play()
         if (not objeto.tieneEscudoActivo()){
           objeto.recibirDaño(40)

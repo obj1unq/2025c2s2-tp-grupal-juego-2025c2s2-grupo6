@@ -13,7 +13,7 @@ class Patron  {
     self.caida()
   }
   method caida() {
-    game.onTick(700, self.identity(), {self.caerObjetos()})
+    game.onTick(100, self.identity(), {self.caerObjetos()})
   }
   method caerObjetos() {
     if (visuales.anyOne().position().y() != 0){

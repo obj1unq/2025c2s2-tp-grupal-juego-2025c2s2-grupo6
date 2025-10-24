@@ -15,7 +15,7 @@ class Nivel {
     return siguienteNivel
   }
   method comenzarACaer() {
-    game.onTick(3000, "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
+    game.onTick(1000, "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
   }
   method start() {
     //construyo los patrones
@@ -47,6 +47,7 @@ class Nivel {
   }
   
   method inicializar() {        //inicializador del nivel.
+    //game.addVisual(tableroJugable)
     self.añadirPersonaje()
     self.start()
     self.comenzarACaer()

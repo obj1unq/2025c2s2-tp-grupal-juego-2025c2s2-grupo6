@@ -1,7 +1,12 @@
-import obstaculos.*
 import obstaculosConClases.*
 import wollok.game.*
 object tableroJugable {
+    method position() {
+      return game.origin()
+    }
+    method image() {
+      return "fondo.png"
+    }
     const property x = 2 
     const property y = game.width()-2
 }

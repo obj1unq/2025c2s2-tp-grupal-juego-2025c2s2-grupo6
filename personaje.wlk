@@ -1,8 +1,8 @@
 import juego.*
 import niveles.*
 import wollok.game.*
-import obstaculos.*
-import objetos.*
+import obstaculosConClases.*
+import objetosConClases.*
 
 object personaje {
   var property position = game.at(3,1)

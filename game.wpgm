@@ -1,11 +1,9 @@
 import wollok.game.*
 import personaje.*
-import obstaculos.*
 import juego.*
 
 program juego{
+    //game.boardGround("fintest.jpg")
     fallToPieces.inicializar() // inicializa el juego en el nivel dado.
-    game.boardGround("fondo1.png")
     game.start()
-    
 }
