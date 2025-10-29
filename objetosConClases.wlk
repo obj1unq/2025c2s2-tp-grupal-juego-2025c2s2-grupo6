@@ -4,49 +4,44 @@ import personaje.*
 class Objeto {
   var property position 
   const clave = self.identity()
+  const sonido
+  method play(){
+    game.sound(sonido).play()
+  }
 
+  method chocarConEfecto(objeto) {
+    game.removeVisual(objeto)
+    self.play()
+    self.efectoDeChoque(objeto)
+  }
   method caida() {
       game.onTick(400, clave, {self.caer()})
     }
-    method caer() {
-      //Prop: realizar el efecto gravitatorio en el objeto dado
-        if (position.y() != 0){
+  method caer() {
+    //Prop: realizar el efecto gravitatorio en el objeto dado
+      if (position.y() != 0){
         position = game.at(position.x(), position.y()-1)
-        }else{
+      }else{
         position = game.at(position.x(), 10)
-        }
+      }
     }
+  method efectoDeChoque(objeto) {}
 }
 
-class Pocion inherits Objeto{
+class Pocion inherits Objeto(sonido = "pocion.mp3"){
     //Prop: objeto que recupera la vida del personaje en 25 puntos de vida 
-    const property image  = "pocion.png"
-    
-    method play(){
-        game.sound("pocion.mp3").play()
-    }
+    const property image  = "pocion.png" 
 
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-        game.removeVisual(self)
-        game.schedule(2000, {game.addVisual(self)})
-        self.play()
-        game.say(objeto, "" + personaje.vida() + " HP")
-        personaje.curar()
+    override method efectoDeChoque(objeto) {
+      game.say(objeto, "" + personaje.vida() + " HP")
+      personaje.curar()
     }
 }
 
-class EscudoMagico inherits Objeto {
+class EscudoMagico inherits Objeto(sonido = "escudoActivado.mp3") {
     var property image    =  "escudoMagico.png"
     
-    method play(){
-    game.sound("escudoActivado.mp3").play()
-    }
-
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-      game.removeVisual(self)
-      self.play()
+    override method efectoDeChoque(objeto) {
       game.say(objeto, "Escudo Activado")
       objeto.tieneEscudoActivo(true)
       game.schedule(10000, {   game.say(objeto, "Ya no soy invencible :(")
@@ -54,34 +49,20 @@ class EscudoMagico inherits Objeto {
     }
 }
 
-class DiamanteValioso inherits Objeto{
+class DiamanteValioso inherits Objeto(sonido = "bigWin.mp3"){
     var property image    = "diamanteValioso.png"
 
-    method play(){
-      game.sound("bigWin.mp3").play()
-    }
-
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-      self.play()
+    override method efectoDeChoque(objeto) {
       game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+200)
         objeto.obtenerPuntos(200)
     }
 }
 
-class PiedraPreciosa inherits Objeto {
+class PiedraPreciosa inherits Objeto(sonido = "littleWin.mp3") {
     var property image    = "piedraPreciosa.png"
 
-    method play(){
-    game.sound("littleWin.mp3").play()
-    }
-
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-      game.removeVisual(self)
-      self.play()
+    override method efectoDeChoque(objeto) {
       game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+100)
         objeto.obtenerPuntos(100)
     }
-
 }
