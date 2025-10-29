@@ -1,7 +1,12 @@
 import wollok.game.*
 import niveles.*
 object fallToPieces{
-    var property nivelActual = nivel1
+    var property nivelActual = nivel2
+    method irASiguienteNivel() {
+      nivelActual.clearLevel()
+      nivelActual = nivelActual.siguienteNivel()
+      nivelActual.inicializar()
+    }
     method inicializar() {          //metodo que inicializa el nivel actual del juego.
         const musicaPrincipal = game.sound("elcaminoDelMago.mp3")
         game.width(7)

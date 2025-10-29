@@ -10,12 +10,17 @@ class Nivel {
   const property setupDelNivel
   const property patronesDelNivel
  
-
+  method clearLevel() {
+    setupDelNivel.clear()
+    patronesDelNivel.clear()
+  }
   method siguienteNivel() {
     return siguienteNivel
   }
   method comenzarACaer() {
-    game.onTick(1000, "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
+    if (!patronesDelNivel.isEmpty()){
+      game.onTick(500, "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
+    }
   }
   method start() {
     //construyo los patrones
@@ -43,6 +48,7 @@ class Nivel {
     game.addVisual(personaje)
     keyboard.d().onPressDo{personaje.derecha()}
     keyboard.a().onPressDo{personaje.izquierda()}
+    keyboard.p().onPressDo{personaje.parry()}
     game.onCollideDo(personaje, {objeto => objeto.chocarConEfecto(personaje)})
   }
   
@@ -54,6 +60,19 @@ class Nivel {
     //algoritmo.level1()
   }
 }
+
+class Batalla inherits Nivel{
+  const boss  
+  override method inicializar() {
+    self.añadirPersonaje()
+    game.addVisual(boss)
+    game.schedule(3000, {boss.atacar()})
+    game.onCollideDo(boss, {objeto => objeto.chocarConEfecto(boss)})
+  }
+}
+
+
+
 const nivel1 = new Nivel(
   setupDelNivel = #{ [p,l,l,_,_,p],
                      [_,l,l,l,_,p],
@@ -67,80 +86,17 @@ const nivel1 = new Nivel(
 
   siguienteNivel = final
 )
+
+const nivel2 = new Batalla(
+  boss = wizard,
+  setupDelNivel = #{},         
+  patronesDelNivel = #{},
+
+  siguienteNivel = nivel1
+)
 object final {
   const property position = game.origin()
   const property image = "fintest.jpg"
   //game.addVisual(self)
 }
 
-
-// IMPLEMENTACION ANTERIOR.
-
-/*
-const nivel1 = new Nivel( 
-    objetosDelNivel = #{pocion, escudoMagico, piedraPreciosa},
-    //implementacion2
-    programaciones2 = [1000,1000,1000,2000,4000,3000],
-    //implementacion1
-    programaciones = [[1000,1000,1000,1000,1000,1000],
-                      [1000,2000,2000,2000,2000,2000],
-                      [1000,3000,3000,3000,3000,2000],
-                      [1000,4000,4000,4000,4000,1000],
-                      [1000,5000,5000,5000,5000,2000],
-                      [1000,6000,6000,6000,6000,2000],
-                      [1000,7000,7000,7000,7000,2000]],
-    posicionesObstaculos = [[_,p,l,c,_,_],
-                            [_,_,p,p,_,_],
-                            [_,p,_,_,c,_],
-                            [_,_,p,p,_,_],
-                            [_,p,_,_,c,_],
-                            [_,p,_,_,p,_],
-                            [_,p,l,c,_,_]],
-    siguienteNivel  = final
-)
-
-Class nivel
-  method añadirObstaculos() {
-    objetosDelNivel.forEach{obstaculo => game.addVisual(obstaculo)}
-    objetosDelNivel.forEach{obstaculo => game.schedule(0.randomUpTo(500),{ => obstaculo.caida()})}
-    
-  }
-
-
-*/
-
-/*
-object p {
-  method crearInstancia(position) {
-    return new Pared(position = position)
-  }
-  method crear(position,tiempo) {
-    const obj = self.crearInstancia(position)
-    game.schedule(tiempo, {game.addVisual(obj) obj.caida()})
-  }
-}
-
-object l {
-  method crearInstancia(position) {
-    return new Lava(position = position)
-  }
-  method crear(position,tiempo) {
-    var obj = self.crearInstancia(position)
-    game.schedule(tiempo, {game.addVisual(obj) obj.caida()})
-  }
-}
-
-object c {
-
-
-  method crear(position,tiempo) {
-    game.schedule(tiempo, {const obj = new CajaNegra(position = position) game.addVisual(obj) obj.caida()})
-  }
-}
-
-object _ {
-  method crear(position,tiempo) {
-    
-  }
-}
-*/

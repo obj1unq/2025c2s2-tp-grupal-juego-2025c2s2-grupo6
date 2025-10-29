@@ -40,7 +40,10 @@ class Ascuas inherits Obstaculo{
     method play(){
     game.sound("ascuas.mp3").play()
     }
-
+    method devolver() {
+      game.removeTickEvent(clave)
+      game.onTick(300, clave, {self.volver()})
+    }
     method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
         game.removeVisual(self)
@@ -50,6 +53,11 @@ class Ascuas inherits Obstaculo{
           objeto.recibirDaño(40)
           objeto.detenerJuegoSiEstoyMuerto()
         }
+    }
+    method volver() {
+      if (position.y() != game.height()){
+          position = position.up(1)
+      }
     }
 }
 
