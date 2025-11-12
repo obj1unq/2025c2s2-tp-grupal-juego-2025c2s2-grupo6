@@ -1,3 +1,4 @@
+import configuraciones.*
 import wollok.game.*
 import niveles.*
 object fallToPieces{
@@ -17,6 +18,7 @@ object fallToPieces{
         game.schedule(500, { musicaPrincipal.play()} )
         musicaPrincipal.volume(0.5)
         nivelActual.inicializar()
+        configurarJuego.tecladoEnJuego()
         //objeto configurarControles
     }
 }

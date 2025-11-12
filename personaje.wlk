@@ -13,6 +13,10 @@ object personaje {
   var property puntosObtenidos = 0  
   var property tieneEscudoActivo = false 
 
+  method nada() {
+    
+  }
+
   method estoyMuerto() = vida <= 0 
   //Verificar si la vida es menor o igual a 0
   
@@ -62,8 +66,8 @@ object personaje {
 }
 
 object wizard {
-  var property vida = 100
-  var property position = game.at(6,10)
+  var property vida = 60
+  var property position = game.at(5,10)
   var property image = "aaa.png"
   const property hechizosMagicos = #{a}
   
@@ -92,7 +96,9 @@ object wizard {
   }
 
   method atacar() {
-    game.onTick(2000, "moverYAtacar",{self.atacarHacia(personaje.position())})
+    //game.onTick(2000, "moverYAtacar",{self.atacarHacia(personaje.position())})
+    //prueba
+    game.onTick(1000, "moverYAtacar",{self.atacarHacia(position)})
     game.onTick(1000, "moveRand", {self.posicionRandom()})
   }
   method posicionRandom() {
@@ -103,7 +109,7 @@ object wizard {
     self.invocarAtaque()
   }
   method invocarAtaque() {
-    const ataque = hechizosMagicos.anyOne().crear(position)
+    const ataque = hechizosMagicos.anyOne().crear(position.down(1))
     game.addVisual(ataque)
     ataque.caida()
   }

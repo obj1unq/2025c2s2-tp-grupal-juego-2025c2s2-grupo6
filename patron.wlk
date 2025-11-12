@@ -1,8 +1,13 @@
 import wollok.game.*
-
+import niveles.dificultadBaja
+import niveles.dificultadAlta
 class Patron  {
   const property visuales = #{}
+  var tiempoDePatron = dificultadBaja.tiempoDeCaida()
 
+  method tiempoDeCaida(tiempoDeDificultad) {
+    tiempoDePatron = tiempoDeDificultad
+  }
   method añadirObstaculos(patron) {
     (1..patron.size()-1).forEach({x => visuales.add(patron.get(x).crear(game.at(x,10)))})
   }
@@ -13,7 +18,7 @@ class Patron  {
     self.caida()
   }
   method caida() {
-    game.onTick(100, self.identity(), {self.caerObjetos()})
+    game.onTick(tiempoDePatron, self.identity(), {self.caerObjetos()})
   }
   method caerObjetos() {
     if (visuales.anyOne().position().y() != 0){

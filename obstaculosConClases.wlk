@@ -1,18 +1,6 @@
 import wollok.game.*
 import tableroJugable.*
 
-object clavesDeUso {
-  const property claves =["a","b","c","d","e","f","g","h","i","j","k","l","m","1","2","3","4"]
-  method darClave() {
-    //prec: n = eventos.. n < claves.size() eventos en el tablero
-    const clave = claves.first()
-    claves.remove(clave)
-    return clave
-  }
-  method agregarClave(clave) {
-    claves.add(clave)
-  }
-}
 
 class Obstaculo{
   var property position
@@ -32,8 +20,17 @@ class Obstaculo{
     game.removeVisual(self)
     game.removeTickEvent(clave) 
   }
+  method chocarConEfecto(objeto) {
+      //Prop: realizar un efecto sobre el objeto colisionado
+        //self.play()
+    if (not objeto.tieneEscudoActivo()){
+      objeto.recibirDaño(20)
+      self.cambiarImagen()
+      objeto.detenerJuegoSiEstoyMuerto()
+    }
+  }
+  method cambiarImagen() {}
 }
-
 class Ascuas inherits Obstaculo{
     var property image = "ascuas.gif"
 
@@ -44,7 +41,7 @@ class Ascuas inherits Obstaculo{
       game.removeTickEvent(clave)
       game.onTick(300, clave, {self.volver()})
     }
-    method chocarConEfecto(objeto) {
+    override method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
         game.removeVisual(self)
         //game.schedule(5000, {game.addVisual(self)})
@@ -58,36 +55,32 @@ class Ascuas inherits Obstaculo{
       if (position.y() != game.height()){
           position = position.up(1)
       }
+      else if (position.y() == game.height()){ 
+        self.ocultar() 
+      }
     }
 }
 
 class CajaNegra inherits Obstaculo {
   var property image = "aaa.png"
 
-  method chocarConEfecto(p) {
-    image = "aaa.png"
-  }
 }
 
 class Lava inherits Obstaculo{
-  var property image = "lava.png"
-  method chocarConEfecto(p) {
-    image = "aaa.png"
-  }
+  var property image = "lava1.png"
 
 }
 
 class Pared inherits Obstaculo{
-  var property image = "aaa.png"
-
-  method chocarConEfecto(p) {
-    image = "aaa.png"
+  var property image = "pared.png"
+  override method cambiarImagen(){
+    image = "pared-rota1.png"
   }
 }
 class Vacio inherits Obstaculo{
   var property image = ""
 
-  method chocarConEfecto(p) {
+  override method chocarConEfecto(p) {
      
   }
 }
@@ -128,3 +121,19 @@ object _ {
     return obj
   }
 }
+
+/*
+object clavesDeUso {
+  const property claves =["a","b","c","d","e","f","g","h","i","j","k","l","m","1","2","3","4"]
+  method darClave() {
+    //prec: n = eventos.. n < claves.size() eventos en el tablero
+    const clave = claves.first()
+    claves.remove(clave)
+    return clave
+  }
+  method agregarClave(clave) {
+    claves.add(clave)
+  }
+}
+
+*/
