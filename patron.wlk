@@ -1,3 +1,4 @@
+import tableroJugable.*
 import wollok.game.*
 import niveles.dificultadBaja
 import niveles.dificultadAlta
@@ -37,5 +38,12 @@ object patronFactory {
   method crear() {
     const obj = new Patron() 
     return obj
+  }
+}
+
+
+object posicion {
+  method randomizarEnFila(fila) {
+    return game.at(tableroJugable.x().randomUpTo(tableroJugable.y()).truncate(0), fila)
   }
 }

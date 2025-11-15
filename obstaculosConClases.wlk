@@ -4,7 +4,7 @@ import tableroJugable.*
 
 class Obstaculo{
   var property position
-  
+  var property image 
   const clave = self.identity()
 
   method caida() {
@@ -22,27 +22,27 @@ class Obstaculo{
   }
   method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
-        //self.play()
+      //self.play()
+      self.efectoEn(objeto)
+  }
+  method cambiarImagen() = ""
+  method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
       objeto.recibirDaño(20)
-      self.cambiarImagen()
+      self.image(self.cambiarImagen())
       objeto.detenerJuegoSiEstoyMuerto()
     }
   }
-  method cambiarImagen() {}
 }
-class Ascuas inherits Obstaculo{
-    var property image = "ascuas.gif"
+class Ascuas inherits Obstaculo(image = "ascuas.gif"){
 
     method play(){
     game.sound("ascuas.mp3").play()
     }
-    method devolver() {
-      game.removeTickEvent(clave)
-      game.onTick(300, clave, {self.volver()})
+    override method cambiarImagen() {
+      return "ascuassss.gif"
     }
-    override method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
+    override method efectoEn(objeto){
         game.removeVisual(self)
         //game.schedule(5000, {game.addVisual(self)})
         self.play()
@@ -50,6 +50,11 @@ class Ascuas inherits Obstaculo{
           objeto.recibirDaño(40)
           objeto.detenerJuegoSiEstoyMuerto()
         }
+    }
+    method devolver() {
+      self.image(self.cambiarImagen())
+      game.removeTickEvent(clave)
+      game.onTick(300, clave, {self.volver()})
     }
     method volver() {
       if (position.y() != game.height()){
@@ -59,27 +64,30 @@ class Ascuas inherits Obstaculo{
         self.ocultar() 
       }
     }
+    override method caer() {
+      super()
+      if (position.y() == 0){
+        self.ocultar()
+      }
+    }
 }
 
-class CajaNegra inherits Obstaculo {
-  var property image = "aaa.png"
-
-}
-
-class Lava inherits Obstaculo{
-  var property image = "lava1.png"
-
-}
-
-class Pared inherits Obstaculo{
-  var property image = "pared.png"
-  override method cambiarImagen(){
-    image = "pared-rota1.png"
+class PurpleBall inherits Ascuas(image = "purpleball1.gif"){
+  override method cambiarImagen() {
+    return "idk3.gif"
   }
 }
-class Vacio inherits Obstaculo{
-  var property image = ""
 
+class CajaNegra inherits Obstaculo(image = "aaa.png"){}
+
+class Lava inherits Obstaculo(image = "lava1.png"){}
+
+class Pared inherits Obstaculo(image = "pared.png"){
+  override method cambiarImagen(){
+    return "pared-rota1.png"
+  }
+}
+class Vacio inherits Obstaculo(image = ""){
   override method chocarConEfecto(p) {
      
   }
@@ -115,25 +123,17 @@ object a {
   }
 }
 
+object u {
+    
+  method crear(position) {
+    const obj = new PurpleBall(position = position) 
+    return obj
+  }
+}
+
 object _ {
   method crear(position) {
     const obj = new Vacio(position = position) 
     return obj
   }
 }
-
-/*
-object clavesDeUso {
-  const property claves =["a","b","c","d","e","f","g","h","i","j","k","l","m","1","2","3","4"]
-  method darClave() {
-    //prec: n = eventos.. n < claves.size() eventos en el tablero
-    const clave = claves.first()
-    claves.remove(clave)
-    return clave
-  }
-  method agregarClave(clave) {
-    claves.add(clave)
-  }
-}
-
-*/

@@ -14,16 +14,16 @@ class Dificultad {
 
 object dificultadBaja {
   method tiempoDeAparicion() {
-    return 1000
+    return 800
   }
   method tiempoDeCaida() {
-    return 300
+    return 200
   }
 }
 
 object dificultadMedia {
   method tiempoDeAparicion() {
-    return 1000
+    return 800
   }
   method tiempoDeCaida() {
     return 100
@@ -42,12 +42,12 @@ object dificultadAlta {
 
 
 class Nivel {
-
+  const property nivelActual
   const property siguienteNivel 
   const property setupDelNivel
   const property patronesDelNivel
-  const property objetosDelNivel  
-  const dificultad
+  var property objetosDelNivel  
+  const property dificultad
   
   method clearLevel() {
     setupDelNivel.clear()
@@ -67,12 +67,14 @@ class Nivel {
     setupDelNivel.forEach({setup => self.crearPatron(setup)})
     //llamo a un patron distinto cada 3 segundosv
   }
-
+  //method showLevel() {
+    //addons.mostrarNivelActual(nivelActual)
+  //}
+  //method dropearObjetos() {
+    //game.onTick(30000, "objs", {objetosDelNivel.anyOne().invocar()})
+  //}
   method startObjetos() {
-    const objNivel = objetosDelNivel.map({objeto => objeto.crear(game.at(5,10))}).asSet() //modificar
-    objetosDelNivel.clear()
-    objNivel.forEach({objeto => objetosDelNivel.add(objeto)})
-    game.onTick(20000, "objs", objetosDelNivel.anyOne().invocar())
+    objetosDelNivel = objetosDelNivel.map({objeto => objeto.crear(posicion.randomizarEnFila(10))}).asSet() //modificar
   }
   method crearPatron(setup) {
     const pat = patronFactory.crear() 
@@ -99,7 +101,11 @@ class Nivel {
   method inicializar() {        //inicializador del nivel.
     self.añadirPersonaje()
     self.startSetup()
-    game.schedule(3000,{self.comenzarACaer()})
+    //self.startObjetos()
+    //self.showLevel()
+    //self.dropearObjetos()
+    game.schedule(5000,{self.comenzarACaer()})
+
   }
 }
 
@@ -107,7 +113,6 @@ class Batalla inherits Nivel{
   const boss  
   override method inicializar() {
     self.añadirPersonaje()
-    self.startObjetos()
     //game.addVisual(personaje)
     game.addVisual(boss)
     game.schedule(3000, {boss.atacar()})
@@ -116,13 +121,14 @@ class Batalla inherits Nivel{
 }
 
 const tutorial = new Nivel(
-  dificultad = dificultadAlta,
+  nivelActual = 0,
+  dificultad = dificultadBaja,
   objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,l,l,_,_,p],
-                     [_,l,l,l,_,p],
-                     [p,_,l,_,a,p],
-                     [_,l,l,_,_,l],
-                     [_,p,l,_,l,_],
+  setupDelNivel = #{ [p,u,u,_,_,p],
+                     [_,u,a,u,_,p],
+                     [p,_,u,_,a,p],
+                     [_,u,u,_,_,a],
+                     [_,p,u,_,u,_],
                      [_,p,p,p,p,_],
                      [_,a,_,a,_,a]},
                      
@@ -132,6 +138,7 @@ const tutorial = new Nivel(
 )
 
 const nivel1 = new Nivel(
+  nivelActual = 1,
   dificultad = dificultadAlta,
   objetosDelNivel = #{e,b,d},
   setupDelNivel = #{ [p,l,l,_,_,p],
@@ -144,10 +151,11 @@ const nivel1 = new Nivel(
                      
   patronesDelNivel = #{},
 
-  siguienteNivel = final
+  siguienteNivel = nivel2
 )
 
 const nivel3 = new Nivel(
+  nivelActual = 3,
   dificultad = dificultadAlta,
   objetosDelNivel = #{e,b,d},
   setupDelNivel = #{ [p,l,l,_,_,p],
@@ -167,8 +175,37 @@ const nivel3 = new Nivel(
   siguienteNivel = final
 )
 
+const nivel4 = new Nivel(
+  nivelActual = 4,
+  dificultad = dificultadMedia,
+  objetosDelNivel = #{e,b,d},
+  setupDelNivel = #{ [p,l,l,_,_,p],
+                     [_,l,l,l,_,p],
+                     [p,_,l,_,_,p],
+                     [_,l,l,_,_,l],
+                     [_,p,l,_,l,_],
+                     [_,p,p,p,p,_],
+                     [p,_,_,_,_,p],
+                     [_,l,_,_,l,_],
+                     [_,p,_,p,l,_],
+                     [_,_,p,p,_,_],
+                     [_,a,_,a,_,a],
+                     [p,_,l,l,_,p],
+                     [p,p,_,_,p,p],
+                     [_,p,_,p,l,_],
+                     [_,p,p,p,_,l],
+                     [a,a,_,a,a,a]
+                     },
+                     
+  patronesDelNivel = #{},
+
+  siguienteNivel = nivel2
+)
+
+
 
 const nivel2 = new Batalla(
+  nivelActual = 2,
   dificultad = dificultadBaja,
   objetosDelNivel = #{e,b,d},
   boss = wizard,

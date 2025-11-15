@@ -69,7 +69,7 @@ object wizard {
   var property vida = 60
   var property position = game.at(5,10)
   var property image = "aaa.png"
-  const property hechizosMagicos = #{a}
+  const property hechizosMagicos = #{a,u}
   
   method tieneEscudoActivo() {
     return false

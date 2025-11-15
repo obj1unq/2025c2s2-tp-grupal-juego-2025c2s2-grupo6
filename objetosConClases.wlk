@@ -1,17 +1,25 @@
 import wollok.game.*
 import personaje.*
+import patron.posicion
+import juego.fallToPieces
+
 
 class Objeto {
   var property position 
   const clave = self.identity()
   const sonido
+  const tiempoDeCaida = 700
   method play(){
     game.sound(sonido).play()
   }
   method invocar() {
-    if (game.getObjectsIn(position).isEmpty()){
-      position = game.at(2.randomUpTo(game.width()-1).truncate(0), 10)
-    } 
+    if (!game.getObjectsIn(position).isEmpty()){
+      position = posicion.randomizarEnFila(10)
+    }
+    else{
+      game.addVisual(self)
+      self.caida()
+    }
   }
   method chocarConEfecto(objeto) {
     game.removeVisual(objeto)
@@ -19,8 +27,8 @@ class Objeto {
     self.efectoDeChoque(objeto)
   }
   method caida() {
-      game.onTick(400, clave, {self.caer()})
-    }
+      game.onTick(tiempoDeCaida, clave, {self.caer()})
+  }
   method ocultar() {
     game.removeVisual(self)
     game.removeTickEvent(clave) 

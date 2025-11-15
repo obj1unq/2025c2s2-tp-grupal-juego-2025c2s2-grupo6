@@ -2,7 +2,7 @@ import configuraciones.*
 import wollok.game.*
 import niveles.*
 object fallToPieces{
-    var property nivelActual = nivel2
+    var property nivelActual = tutorial
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
