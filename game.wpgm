@@ -1,29 +1,9 @@
 import wollok.game.*
 import personaje.*
-import obstaculos.*
+import juego.*
 
-
-program fallToPieces{
-    //CONFIG
-    game.title("fall to pieces")
-    game.width(7)
-    game.height(10)
-    game.cellSize(50)
-
-    //VISUALES
-    // game.boardGround(image)
-    game.addVisual(personaje)
-    game.addVisual(obstaculo)
-
-    //TECLADO
-    keyboard.d().onPressDo{personaje.derecha()}
-    keyboard.a().onPressDo{personaje.izquierda()}
-
-    //EFECTO 
-    game.onTick(100, "caer", {obstaculo.caer()})
-
-    //COMENZAR JUEGO 
+program juego{
+    game.boardGround("fondo1.png")
+    fallToPieces.inicializar() // inicializa el juego en el nivel dado.
     game.start()
-    
-
-}
+}  
