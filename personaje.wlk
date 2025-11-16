@@ -14,7 +14,7 @@ object personaje {
   var property tieneEscudoActivo = false 
 
   method puntosParaGanar() {
-    return 1000
+    return 200
   }
 
   method nada() {
@@ -47,7 +47,9 @@ object personaje {
   method obtenerPuntos(puntos) {
     if (puntosObtenidos >= self.puntosParaGanar()){
       game.say(self, "You WIN!!")
-      game.stop()
+      puntosObtenidos = 0
+      fallToPieces.irASiguienteNivel()
+      //game.stop()
     }else{
       puntosObtenidos += puntos
     }

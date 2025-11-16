@@ -52,7 +52,8 @@ class Nivel {
   method clearLevel() {
     setupDelNivel.clear()
     patronesDelNivel.clear()
-    configurarJuego.quitarPersonaje()
+    game.removeTickEvent("puntosPorSegundo")
+    //configurarJuego.quitarPersonaje()
   }
   method siguienteNivel() {
     return siguienteNivel
@@ -88,7 +89,7 @@ class Nivel {
 
   method añadirPersonaje() {          // invoca al personaje.v
     configurarJuego.agregarPersonaje()
-    game.addVisual(puntos)
+    configurarJuego.agregarPuntos()
   }
   method sumarPuntos() {
     game.onTick(1000, "puntosPorSegundo", {personaje.obtenerPuntos(10)})
@@ -101,7 +102,6 @@ class Nivel {
       self.comenzarACaer() 
       self.sumarPuntos()
     })
-
   }
 }
 
@@ -130,7 +130,7 @@ const tutorial = new Nivel(
                      
   patronesDelNivel = #{},
 
-  siguienteNivel = final
+  siguienteNivel = nivel1
 )
 
 const nivel1 = new Nivel(
@@ -150,6 +150,17 @@ const nivel1 = new Nivel(
   siguienteNivel = nivel2
 )
 
+
+const nivel2 = new Batalla(
+  nivelActual = 2,
+  dificultad = dificultadBaja,
+  objetosDelNivel = #{e,b,d},
+  boss = wizard,
+  setupDelNivel = #{},         
+  patronesDelNivel = #{},
+
+  siguienteNivel = nivel3
+)
 const nivel3 = new Nivel(
   nivelActual = 3,
   dificultad = dificultadAlta,
@@ -168,9 +179,8 @@ const nivel3 = new Nivel(
                      
   patronesDelNivel = #{},
 
-  siguienteNivel = final
+  siguienteNivel = nivel4
 )
-
 const nivel4 = new Nivel(
   nivelActual = 4,
   dificultad = dificultadMedia,
@@ -195,23 +205,43 @@ const nivel4 = new Nivel(
                      
   patronesDelNivel = #{},
 
-  siguienteNivel = nivel2
+  siguienteNivel = nivel5
 )
 
-
-
-const nivel2 = new Batalla(
-  nivelActual = 2,
-  dificultad = dificultadBaja,
+const nivel5 = new Nivel(
+  nivelActual = 5,
+  dificultad = dificultadMedia,
   objetosDelNivel = #{e,b,d},
-  boss = wizard,
-  setupDelNivel = #{},         
+  setupDelNivel = #{ [p,l,l,_,_,p],
+                     [_,l,l,l,_,p],
+                     [p,_,l,_,_,p],
+                     [_,l,l,_,_,l],
+                     [_,p,l,_,l,_],
+                     [_,p,p,p,p,_],
+                     [p,_,_,_,_,p],
+                     [_,l,_,_,l,_],
+                     [_,p,_,p,l,_],
+                     [_,_,p,p,_,_],
+                     [_,a,_,a,_,a],
+                     [p,_,l,l,_,p],
+                     [p,p,_,_,p,p],
+                     [_,p,_,p,l,_],
+                     [_,p,p,p,_,l],
+                     [a,a,_,a,a,a]
+                     },
+                     
   patronesDelNivel = #{},
 
-  siguienteNivel = nivel1
+  siguienteNivel = final
 )
+
+
+
 object final {
   const property position = game.origin()
   const property image = "fintest.jpg"
+  method inicializar() {
+    game.stop()
+  }
 }
 

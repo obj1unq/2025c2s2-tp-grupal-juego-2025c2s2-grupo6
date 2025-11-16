@@ -4,32 +4,35 @@ import tableroJugable.*
 
 class Obstaculo{
   var property position
-  var property image 
+  var property image = self.imagenSinColisionar()
   const clave = self.identity()
 
+  
   method caida() {
       game.onTick(300, clave, {self.caer()})
   }
   method caer() {
-      if (position.y() != 0){
-          position = game.at(position.x(), position.y()-1)
+      if (position.y() >= 0){
+          position = position.down(1)
       }
   }
   method ocultar() {
     position = game.at(position.x(), 10)
     game.removeVisual(self)
-    game.removeTickEvent(clave) 
+    game.removeTickEvent(clave)
+    self.image(self.imagenSinColisionar())
   }
   method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
       //self.play()
       self.efectoEn(objeto)
   }
-  method cambiarImagen() = ""
+  method imagenSinColisionar()
+  method imagenTrasColisionar()
   method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
       objeto.recibirDaño(20)
-      self.image(self.cambiarImagen())
+      self.image(self.imagenTrasColisionar())
       objeto.detenerJuegoSiEstoyMuerto()
     }
   }
@@ -39,7 +42,8 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
     method play(){
     game.sound("ascuas.mp3").play()
     }
-    override method cambiarImagen() {
+    override method imagenSinColisionar() = image
+    override method imagenTrasColisionar() {
       return "ascuassss.gif"
     }
     override method efectoEn(objeto){
@@ -52,7 +56,7 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
         }
     }
     method devolver() {
-      self.image(self.cambiarImagen())
+      self.image(self.imagenTrasColisionar())
       game.removeTickEvent(clave)
       game.onTick(300, clave, {self.volver()})
     }
@@ -66,28 +70,40 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
     }
     override method caer() {
       super()
-      if (position.y() == -1){
+      if (position.y() < 0){
         self.ocultar()
       }
     }
 }
 
 class PurpleBall inherits Ascuas(image = "purpleball1.gif"){
-  override method cambiarImagen() {
+  override method imagenSinColisionar() = image
+  override method imagenTrasColisionar() {
     return "idk3.gif"
   }
 }
 
-class CajaNegra inherits Obstaculo(image = "aaa.png"){}
+class CajaNegra inherits Obstaculo(image = "aaa.png"){
+  override method imagenSinColisionar() = image
+  override method imagenTrasColisionar() = image
+}
 
-class Lava inherits Obstaculo(image = "lava1.png"){}
+class Lava inherits Obstaculo(image = "lava1.png"){
+  override method imagenSinColisionar() = image
+  override method imagenTrasColisionar() = image
+}
 
-class Pared inherits Obstaculo(image = "pared.png"){
-  override method cambiarImagen(){
+class Pared inherits Obstaculo(){
+  override method imagenSinColisionar() {
+    return "pared.png"
+  }
+  override method imagenTrasColisionar(){
     return "pared-rota1.png"
   }
 }
 class Vacio inherits Obstaculo(image = ""){
+  override method imagenSinColisionar() = image
+  override method imagenTrasColisionar() = image
   override method chocarConEfecto(p) {
      
   }

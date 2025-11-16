@@ -18,6 +18,9 @@ object puntos {
   method text(){
     return "Puntuacion: " + personaje.puntosObtenidos() + "/" + personaje.puntosParaGanar()
   }
+  method chocarConEfecto(objeto) {
+    
+  }
 }
 
 
