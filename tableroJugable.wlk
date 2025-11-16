@@ -1,15 +1,25 @@
 import obstaculosConClases.*
 import wollok.game.*
+import personaje.personaje
+
 object tableroJugable {
+    const property x = 2 
+    const property y = game.width()-2
     method position() {
       return game.origin()
     }
     method image() {
       return "fondo.png"
     }
-    const property x = 2 
-    const property y = game.width()-2
+
 }
+object puntos {
+  const property position = game.at(5, 9)
+  method text(){
+    return "Puntuacion: " + personaje.puntosObtenidos() + "/" + personaje.puntosParaGanar()
+  }
+}
+
 
 object addons {
   const property niveles = ["","levelup.gif","","",""] 

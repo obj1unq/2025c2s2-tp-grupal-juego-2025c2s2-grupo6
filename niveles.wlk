@@ -65,17 +65,9 @@ class Nivel {
   method startSetup() {
     //construyo los patrones
     setupDelNivel.forEach({setup => self.crearPatron(setup)})
-    //llamo a un patron distinto cada 3 segundosv
+    //llamo a un patron distinto cada 3 segundos
   }
-  //method showLevel() {
-    //addons.mostrarNivelActual(nivelActual)
-  //}
-  //method dropearObjetos() {
-    //game.onTick(30000, "objs", {objetosDelNivel.anyOne().invocar()})
-  //}
-  method startObjetos() {
-    objetosDelNivel = objetosDelNivel.map({objeto => objeto.crear(posicion.randomizarEnFila(10))}).asSet() //modificar
-  }
+
   method crearPatron(setup) {
     const pat = patronFactory.crear() 
     pat.tiempoDeCaida(dificultad.tiempoDeCaida())
@@ -96,15 +88,19 @@ class Nivel {
 
   method añadirPersonaje() {          // invoca al personaje.v
     configurarJuego.agregarPersonaje()
+    game.addVisual(puntos)
   }
-  
+  method sumarPuntos() {
+    game.onTick(1000, "puntosPorSegundo", {personaje.obtenerPuntos(10)})
+  }
+
   method inicializar() {        //inicializador del nivel.
     self.añadirPersonaje()
     self.startSetup()
-    //self.startObjetos()
-    //self.showLevel()
-    //self.dropearObjetos()
-    game.schedule(5000,{self.comenzarACaer()})
+    game.schedule(5000,{
+      self.comenzarACaer() 
+      self.sumarPuntos()
+    })
 
   }
 }
@@ -217,6 +213,5 @@ const nivel2 = new Batalla(
 object final {
   const property position = game.origin()
   const property image = "fintest.jpg"
-  //game.addVisual(self)
 }
 

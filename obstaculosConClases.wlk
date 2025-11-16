@@ -34,7 +34,7 @@ class Obstaculo{
     }
   }
 }
-class Ascuas inherits Obstaculo(image = "ascuas.gif"){
+class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
 
     method play(){
     game.sound("ascuas.mp3").play()
@@ -66,7 +66,7 @@ class Ascuas inherits Obstaculo(image = "ascuas.gif"){
     }
     override method caer() {
       super()
-      if (position.y() == 0){
+      if (position.y() == -1){
         self.ocultar()
       }
     }
