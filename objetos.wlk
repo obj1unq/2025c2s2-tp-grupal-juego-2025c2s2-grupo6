@@ -3,7 +3,7 @@ import personaje.*
 import tableroJugable.*
 
 object pocion {
-//Prop: objeto que recupera la vida del personaje en 25 puntos de vida 
+//Prop: objeto que recupera la vida del lille en 25 puntos de vida 
     var property position = game.at(4,10)
     var property image    = "pocion.png"
     
@@ -16,13 +16,15 @@ object pocion {
         game.removeVisual(self)
         game.schedule(2000, {game.addVisual(self)})
         self.play()
-        game.say(objeto, "" + personaje.vida() + " HP")
-        if (personaje.vida() >= 75){
-            personaje.vida(100)
+        game.say(objeto, "" + lille.vida() + " HP")
+        if (lille.vida() >= 75){
+            lille.vida(100)
         } else{
-            personaje.vida(personaje.vida() + 25)
+            lille.vida(lille.vida() + 25)
         }
+        marcadorDeVida.marcarVidaDe(objeto)
     }
+
     method caida() {
         game.onTick(400, "ob29", {self.caer()})
     }
@@ -51,9 +53,12 @@ object escudoMagico {
         self.play()
         game.say(objeto, "Escudo Activado")
         objeto.tieneEscudoActivo(true)
+        marcadorDeVida.marcarVidaDe(objeto)
         game.schedule(10000, {   game.say(objeto, "Ya no soy invencible :(")
-                                objeto.tieneEscudoActivo(false) })
+                                objeto.tieneEscudoActivo(false)
+                                marcadorDeVida.marcarVidaDe(objeto) })
     }
+    
     method caida() {
       game.onTick(400, "ob35", {self.caer()})
     }
@@ -85,10 +90,13 @@ object piedraPreciosa{
     objeto.puntosObtenidos(objeto.puntosObtenidos() + 100)
     game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos())
     objeto.detenerJuegoSiGane()
+    marcadorDeVida.marcarVidaDe(objeto)
     }
+
     method caida() {
       game.onTick(400, "ob34", {self.caer()})
     }
+
     method caer() {
       //Prop: realizar el efecto gravitatorio en el objeto dado
         if (position.y() != 0){
@@ -115,6 +123,7 @@ object diamanteValioso {
     objeto.puntosObtenidos(objeto.puntosObtenidos() + 200)
     game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos())
     objeto.detenerJuegoSiGane()
+    marcadorDeVida.marcarVidaDe(objeto)
     }
     method caida() {
       game.onTick(400, "ob30", {self.caer()})
