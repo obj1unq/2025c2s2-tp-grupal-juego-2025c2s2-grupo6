@@ -4,14 +4,14 @@ import tableroJugable.puntos
 object configurarJuego {
 
   method tecladoEnJuego() {
-    keyboard.d().onPressDo{personaje.derecha()}
-    keyboard.a().onPressDo{personaje.izquierda()}
-    keyboard.p().onPressDo{personaje.parry()}
+    keyboard.d().onPressDo{lille.derecha()}
+    keyboard.a().onPressDo{lille.izquierda()}
+    keyboard.p().onPressDo{lille.parry()}
   }
   method agregarPersonaje() {
-    if (!game.hasVisual(personaje)){
-      game.addVisual(personaje)
-      game.onCollideDo(personaje, {objeto => objeto.chocarConEfecto(personaje)})
+    if (!game.hasVisual(lille)){
+      game.addVisual(lille)
+      game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
     }
   }
   method agregarPuntos() {
@@ -20,6 +20,6 @@ object configurarJuego {
     }
   }
   method quitarPersonaje() {
-      game.removeVisual(personaje)
+      game.removeVisual(lille)
   }
 }

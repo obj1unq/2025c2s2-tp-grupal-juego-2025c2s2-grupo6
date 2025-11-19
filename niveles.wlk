@@ -45,14 +45,16 @@ class Nivel {
   const property nivelActual
   const property siguienteNivel 
   const property setupDelNivel
-  const property patronesDelNivel
+  const property patronesDelNivel = #{}
   var property objetosDelNivel  
   const property dificultad
   
   method clearLevel() {
     setupDelNivel.clear()
+    self.ocultarPatrones()
     patronesDelNivel.clear()
     game.removeTickEvent("puntosPorSegundo")
+    game.removeTickEvent("mostrarNuevoPatron")
     //configurarJuego.quitarPersonaje()
   }
   method siguienteNivel() {
@@ -68,15 +70,21 @@ class Nivel {
     setupDelNivel.forEach({setup => self.crearPatron(setup)})
     //llamo a un patron distinto cada 3 segundos
   }
-
+  method ocultarPatrones() {
+    patronesDelNivel.forEach({patron => patron.ocultarVisuales()})
+  }
   method crearPatron(setup) {
     const pat = patronFactory.crear() 
     pat.tiempoDeCaida(dificultad.tiempoDeCaida())
     pat.añadirObstaculos(setup)
     patronesDelNivel.add(pat)
   }
-
   method mostrarNuevoPatron() {
+    if(!patronesDelNivel.isEmpty()){
+      self.llamarPatron()
+    }
+  }
+  method llamarPatron() {
     //agarro cualquier patron de la lista de patrones
     const patron = patronesDelNivel.anyOne()
     if (game.hasVisual(patron.visuales().anyOne())){ 
@@ -87,15 +95,18 @@ class Nivel {
     }
   }
 
-  method añadirPersonaje() {          // invoca al personaje.v
+  method añadirPersonaje() {          // invoca al lille.v
     configurarJuego.agregarPersonaje()
     configurarJuego.agregarPuntos()
   }
   method sumarPuntos() {
-    game.onTick(1000, "puntosPorSegundo", {personaje.obtenerPuntos(10)})
+    game.onTick(1000, "puntosPorSegundo", {lille.obtenerPuntos(10)})
   }
-
+  method cambiarEscenario(){
+    escenario.image("backgr.gif")
+  }
   method inicializar() {        //inicializador del nivel.
+    self.cambiarEscenario()
     self.añadirPersonaje()
     self.startSetup()
     game.schedule(5000,{
@@ -105,11 +116,15 @@ class Nivel {
   }
 }
 
-class Batalla inherits Nivel{
-  const boss  
+class Batalla inherits Nivel(setupDelNivel = #{}){
+  const boss 
+  override method cambiarEscenario(){
+    escenario.image("escenario.jpeg")
+  }
   override method inicializar() {
+    self.cambiarEscenario()
     self.añadirPersonaje()
-    //game.addVisual(personaje)
+    //game.addVisual(lille)
     game.addVisual(boss)
     game.schedule(3000, {boss.atacar()})
     game.onCollideDo(boss, {objeto => objeto.chocarConEfecto(boss)})
@@ -155,9 +170,7 @@ const nivel2 = new Batalla(
   nivelActual = 2,
   dificultad = dificultadBaja,
   objetosDelNivel = #{e,b,d},
-  boss = wizard,
-  setupDelNivel = #{},         
-  patronesDelNivel = #{},
+  boss = wizardd,
 
   siguienteNivel = nivel3
 )
@@ -234,8 +247,13 @@ const nivel5 = new Nivel(
 
   siguienteNivel = final
 )
-
-
+const prueba = new Nivel(
+    nivelActual = 0,
+    siguienteNivel = null, 
+    setupDelNivel = #{},
+    objetosDelNivel = #{},  
+    dificultad = dificultadBaja
+    )
 
 object final {
   const property position = game.origin()

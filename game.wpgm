@@ -3,7 +3,6 @@ import personaje.*
 import juego.*
 
 program juego{
-    game.boardGround("backgr.gif")
     fallToPieces.inicializar() // inicializa el juego en el nivel dado.
     game.start()
-}  
+}

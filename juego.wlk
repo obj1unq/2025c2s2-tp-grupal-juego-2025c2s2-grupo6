@@ -1,3 +1,4 @@
+import tableroJugable.*
 import configuraciones.*
 import wollok.game.*
 import niveles.*
@@ -10,6 +11,7 @@ object fallToPieces{
     }
     method inicializar() {          //metodo que inicializa el nivel actual del juego.
         const musicaPrincipal = game.sound("elcaminoDelMago.mp3")
+        game.addVisual(escenario)
         game.width(7)
         game.height(10)
         game.cellSize(64)
