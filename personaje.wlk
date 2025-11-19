@@ -68,9 +68,6 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   method puntosParaGanar() {
     return 200
   }
-  method nada() {
-    
-  }
   method curar() {
     if (vida >= 75){
         vida = 100

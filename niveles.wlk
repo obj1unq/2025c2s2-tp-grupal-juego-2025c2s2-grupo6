@@ -87,7 +87,7 @@ class Nivel {
   method llamarPatron() {
     //agarro cualquier patron de la lista de patrones
     const patron = patronesDelNivel.anyOne()
-    if (game.hasVisual(patron.visuales().anyOne())){ 
+    if (game.hasVisual(patron.visuales().anyOne())){ // encapsular condicion
       self.mostrarNuevoPatron()
     }
     else{

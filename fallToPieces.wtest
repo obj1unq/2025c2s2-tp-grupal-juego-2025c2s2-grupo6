@@ -18,7 +18,6 @@ describe "Fall to Pieces" {
   method initialize(){
     game.addVisual(lille)
     game.addVisual(pared)
-    game.onCollideDo(lille, {pared.chocarConEfecto(lille)})
     lille.position(game.at(2,3))
     pared.position(lille.position().up(1))
   }
@@ -28,6 +27,7 @@ describe "Fall to Pieces" {
     assert.equals(100, lille.vida())
     pared.caer()
     assert.equals(lille.position(), pared.position())
+    pared.chocarConEfecto(lille)
     assert.equals(80, lille.vida())
   }
 }
