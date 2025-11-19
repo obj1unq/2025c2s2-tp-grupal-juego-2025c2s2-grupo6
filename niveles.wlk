@@ -143,8 +143,6 @@ const tutorial = new Nivel(
                      [_,p,p,p,p,_],
                      [_,a,_,a,_,a]},
                      
-  patronesDelNivel = #{},
-
   siguienteNivel = nivel1
 )
 
@@ -160,8 +158,6 @@ const nivel1 = new Nivel(
                      [_,p,p,p,p,_],
                      [_,a,_,a,_,a]},
                      
-  patronesDelNivel = #{},
-
   siguienteNivel = nivel2
 )
 
@@ -189,8 +185,6 @@ const nivel3 = new Nivel(
                      [_,p,_,p,l,_],
                      [_,_,p,p,_,_],
                      [_,a,_,a,_,a]},
-                     
-  patronesDelNivel = #{},
 
   siguienteNivel = nivel4
 )
@@ -215,8 +209,7 @@ const nivel4 = new Nivel(
                      [_,p,p,p,_,l],
                      [a,a,_,a,a,a]
                      },
-                     
-  patronesDelNivel = #{},
+                    
 
   siguienteNivel = nivel5
 )
@@ -242,8 +235,6 @@ const nivel5 = new Nivel(
                      [_,p,p,p,_,l],
                      [a,a,_,a,a,a]
                      },
-                     
-  patronesDelNivel = #{},
 
   siguienteNivel = final
 )
