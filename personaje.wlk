@@ -95,6 +95,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   override method accionAlMorir() {
     game.say(self,"GAME OVER")
+    fallToPieces.nivelActual().clearLevel()
     game.stop()
   }
   method izquierda() {
@@ -103,5 +104,59 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
 	
   method derecha() {
 	position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
+  }
+}
+
+object marcadorDeVida {
+  var property position = game.at(0, 1)
+  var property image = "vida 100.png"
+  
+  method marcarVidaDe(personaje) {
+    if(personaje.tieneEscudoActivo()){
+      self.marcarVidaConEscudoDe(personaje)
+    } else {
+      self.marcarVidaSinEscudoDe(personaje)
+    }
+
+  if(!game.hasVisual(self)){
+    game.addVisual(self)
+    }
+  }
+
+  method marcarVidaSinEscudoDe(personaje) {
+    //Proposito: marcar la vida en rojo
+
+  if(personaje.vida() == 100){
+    image = "vida 100.png"
+  } else if(personaje.vida().between(80, 99)){
+    image = "vida 99 - 80.png"
+  } else if(personaje.vida().between(60, 79)){
+    image = "vida 79 - 60.png"
+  } else if(personaje.vida().between(30, 59)){
+    image = "vida 59 - 30.png"
+  } else if(personaje.vida().between(15, 29)){
+    image = "vida 15 - 0.png"
+  } else {
+    image = "vida 0.png"
+  }
+
+  }
+
+  method marcarVidaConEscudoDe(personaje) {
+    // Proposito: Marcar la vida del personaje en azul
+
+    if(personaje.vida() == 100){
+        image = "vida 100 escudo.png"
+      } else if(personaje.vida().between(80, 99)){
+        image = "vida 99 - 80 escudo.png"
+      } else if(personaje.vida().between(60, 79)){
+        image = "vida 79 - 60 escudo.png"
+      } else if(personaje.vida().between(30, 59)){
+        image = "vida 59 - 30 escudo.png"
+      } else if(personaje.vida().between(15, 29)){
+        image = "vida 15 - 0 escudo.png"
+      } else {
+        image = "vida 0.png"
+      }
   }
 }

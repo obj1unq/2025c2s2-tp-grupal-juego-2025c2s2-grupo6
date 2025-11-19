@@ -1,3 +1,4 @@
+import personaje.*
 import wollok.game.*
 import tableroJugable.*
 
@@ -27,13 +28,17 @@ class Obstaculo{
       //self.play()
       self.efectoEn(objeto)
   }
+
   method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
-      objeto.recibirDaño(20)
+      objeto.recibirDaño(self.dañoQueHace())
       self.image(self.imagenTrasColisionar())
       objeto.realizarAlMorir()
+      marcadorDeVida.marcarVidaDe(objeto)
     }
+    
   }
+  method dañoQueHace() = 20 
   method imagenSinColisionar()
   method imagenTrasColisionar()
 }
@@ -43,20 +48,24 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
     game.sound("ascuas.mp3").play()
     }
     override method imagenSinColisionar() = image
-    override method imagenTrasColisionar() {
+    override method imagenTrasColisionar() = image 
+
+    method imagenTrasParry() {
       return "ascuassss.gif"
     }
     override method efectoEn(objeto){
         game.removeVisual(self)
         //game.schedule(5000, {game.addVisual(self)})
         self.play()
-        if (not objeto.tieneEscudoActivo()){
-          objeto.recibirDaño(40)
-          objeto.realizarAlMorir()
-        }
+        super(objeto)
     }
+
+    override method dañoQueHace() {
+      return 40
+    }
+
     method devolver() {
-      self.image(self.imagenTrasColisionar())
+      self.image(self.imagenTrasParry())
       game.removeTickEvent(clave)
       game.onTick(300, clave, {self.volver()})
     }
@@ -78,7 +87,8 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
 
 class PurpleBall inherits Ascuas(image = "purpleball1.gif"){
   override method imagenSinColisionar() = image
-  override method imagenTrasColisionar() {
+  override method imagenTrasColisionar() = image 
+  override method imagenTrasParry() {
     return "idk3.gif"
   }
 }
