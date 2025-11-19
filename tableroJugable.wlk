@@ -1,6 +1,6 @@
 import obstaculosConClases.*
 import wollok.game.*
-import personaje.personaje
+import personaje.lille
 
 object tableroJugable {
     const property x = 2 
@@ -13,16 +13,27 @@ object tableroJugable {
     }
 
 }
+
+object escenario {
+  const property position = game.origin() 
+  var property image = ""
+}
+
 object puntos {
   const property position = game.at(5, 9)
   method text(){
-    return "Puntuacion: " + personaje.puntosObtenidos() + "/" + personaje.puntosParaGanar()
+    return "Puntuacion: " + lille.puntosObtenidos() + "/" + lille.puntosParaGanar()
   }
   method chocarConEfecto(objeto) {
     
   }
 }
 
+object posicion {
+  method randomizarEnFila(fila) {
+    return game.at(tableroJugable.x().randomUpTo(tableroJugable.y()).truncate(0), fila)
+  }
+}
 
 object addons {
   const property niveles = ["","levelup.gif","","",""] 

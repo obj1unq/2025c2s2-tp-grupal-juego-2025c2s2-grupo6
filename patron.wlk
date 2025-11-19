@@ -13,22 +13,30 @@ class Patron  {
     (1..patron.size()-1).forEach({x => visuales.add(patron.get(x).crear(game.at(x,10)))})
   }
   method startPatron() {
-    visuales.forEach({visual => 
-      game.addVisual(visual) 
-    })
+    self.agregarVisuales()
     self.caida()
   }
+  method agregarVisuales() {
+    visuales.forEach({visual => game.addVisual(visual)})
+  }
+  
   method caida() {
     game.onTick(tiempoDePatron, self.identity(), {self.caerObjetos()})
   }
   method caerObjetos() {
     if (visuales.anyOne().position().y() != 0){
       visuales.forEach({visual => visual.caer()})  
-    }else{
-      visuales.forEach({visual => visual.ocultar()})
+    }
+    else{
+      self.ocultarVisuales()
       self.stop()
     }
   }
+
+  method ocultarVisuales() {
+    visuales.forEach({visual => visual.ocultar()})
+  }
+
   method stop() {
     game.removeTickEvent(self.identity())
   }
@@ -42,8 +50,3 @@ object patronFactory {
 }
 
 
-object posicion {
-  method randomizarEnFila(fila) {
-    return game.at(tableroJugable.x().randomUpTo(tableroJugable.y()).truncate(0), fila)
-  }
-}

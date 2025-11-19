@@ -1,6 +1,6 @@
 import wollok.game.*
 import personaje.*
-import patron.posicion
+import tableroJugable.posicion
 import juego.fallToPieces
 
 
@@ -49,8 +49,8 @@ class Pocion inherits Objeto(sonido = "pocion.mp3"){
     const property image  = "pocion.png" 
 
     override method efectoDeChoque(objeto) {
-      game.say(objeto, "" + personaje.vida() + " HP")
-      personaje.curar()
+      game.say(objeto, "" + lille.vida() + " HP")
+      lille.curar()
     }
 }
 

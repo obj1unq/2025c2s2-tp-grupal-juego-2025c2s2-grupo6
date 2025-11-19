@@ -27,15 +27,15 @@ class Obstaculo{
       //self.play()
       self.efectoEn(objeto)
   }
-  method imagenSinColisionar()
-  method imagenTrasColisionar()
   method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
       objeto.recibirDaño(20)
       self.image(self.imagenTrasColisionar())
-      objeto.detenerJuegoSiEstoyMuerto()
+      objeto.realizarAlMorir()
     }
   }
+  method imagenSinColisionar()
+  method imagenTrasColisionar()
 }
 class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
 
@@ -52,7 +52,7 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
         self.play()
         if (not objeto.tieneEscudoActivo()){
           objeto.recibirDaño(40)
-          objeto.detenerJuegoSiEstoyMuerto()
+          objeto.realizarAlMorir()
         }
     }
     method devolver() {
