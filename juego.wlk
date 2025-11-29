@@ -3,7 +3,7 @@ import configuraciones.*
 import wollok.game.*
 import niveles.*
 object fallToPieces{
-    var property nivelActual = tutorial
+    var property nivelActual = portada
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
@@ -22,6 +22,12 @@ object fallToPieces{
         nivelActual.inicializar()
         configurarJuego.tecladoEnJuego()
         //objeto configurarControles
+    }
+
+    method irASiguienteNivelJugador(){
+      if (nivelActual == portada || nivelActual == carta || nivelActual == pensamientoPreBatalla  || nivelActual == pantallaDerrota){
+          self.irASiguienteNivel()
+      }  
     }
 }
 

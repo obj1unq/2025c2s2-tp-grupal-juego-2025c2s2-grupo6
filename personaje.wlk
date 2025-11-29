@@ -4,6 +4,7 @@ import wollok.game.*
 import obstaculosConClases.*
 import objetosConClases.*
 import tableroJugable.*
+import configuraciones.*
 
 class Personaje {
   var property position
@@ -91,9 +92,17 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
     }
   }
   override method accionAlMorir() {
-    game.say(self,"GAME OVER")
+  //  game.say(self,"GAME OVER")
     fallToPieces.nivelActual().clearLevel()
-    game.stop()
+    pantallaDerrota.siguienteNivel(fallToPieces.nivelActual())
+    configurarJuego.quitarPersonaje()
+    configurarJuego.quitarVida()
+    configurarJuego.quitarPuntos()
+    self.puntosObtenidos(0)
+    self.vida(100)
+    fallToPieces.nivelActual(pantallaDerrota)
+    pantallaDerrota.inicializar()
+  //  game.stop()
   }
   method izquierda() {
 	position = game.at(1.max(position.x() - 1), position.y()) 

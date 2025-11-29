@@ -11,7 +11,12 @@ class Dificultad {
   method tiempoDeAparicion() 
   method tiempoDeCaida()
 }
-
+/*
+object dificultadNula {
+  method tiempoDeAparicion(){}
+  method tiempoDeCaida(){}
+}
+*/
 object dificultadBaja {
   method tiempoDeAparicion() {
     return 800
@@ -38,27 +43,38 @@ object dificultadAlta {
     return 100
   }
 }
-
-
-
-class Nivel {
+class NivelLore{
   const property nivelActual
-  const property siguienteNivel 
-  const property setupDelNivel
+  var property siguienteNivel 
+  const property fondo 
+  method cambiarEscenario(){
+    escenario.image(fondo)
+  }
+  method siguienteNivel() {
+    return siguienteNivel
+  }
+  method clearLevel() {
+    //configurarJuego.quitarPersonaje()
+  }
+
+    method inicializar() {        //inicializador del nivel.
+    self.cambiarEscenario()
+  }
+}
+
+class Nivel inherits NivelLore {
   const property patronesDelNivel = #{}
   var property objetosDelNivel  
   const property dificultad
-  
-  method clearLevel() {
+  const property setupDelNivel
+
+  override method clearLevel() {
     setupDelNivel.clear()
     self.ocultarPatrones()
     patronesDelNivel.clear()
     game.removeTickEvent("puntosPorSegundo")
     game.removeTickEvent("mostrarNuevoPatron")
     //configurarJuego.quitarPersonaje()
-  }
-  method siguienteNivel() {
-    return siguienteNivel
   }
   method comenzarACaer() {
     if (!patronesDelNivel.isEmpty()){
@@ -102,10 +118,7 @@ class Nivel {
   method sumarPuntos() {
     game.onTick(1000, "puntosPorSegundo", {lille.obtenerPuntos(10)})
   }
-  method cambiarEscenario(){
-    escenario.image("backgr.gif")
-  }
-  method inicializar() {        //inicializador del nivel.
+  override method inicializar() {        //inicializador del nivel.
     self.cambiarEscenario()
     self.añadirPersonaje()
     self.startSetup()
@@ -131,22 +144,30 @@ class Batalla inherits Nivel(setupDelNivel = #{}){
   }
 }
 
+const portada = new NivelLore(
+  fondo = "portada.gif",
+  nivelActual = portada,
+  siguienteNivel = carta
+)
+
+const carta = new NivelLore(
+  fondo = "cartaInicio.jpeg",
+  nivelActual = carta,
+  siguienteNivel = nivel5
+)
+
+
 const tutorial = new Nivel(
+  fondo = "backgr.gif",
   nivelActual = 0,
   dificultad = dificultadBaja,
   objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,u,u,_,_,p],
-                     [_,u,a,u,_,p],
-                     [p,_,u,_,a,p],
-                     [_,u,u,_,_,a],
-                     [_,p,u,_,u,_],
-                     [_,p,p,p,p,_],
-                     [_,a,_,a,_,a]},
-                     
+  setupDelNivel = #{},
   siguienteNivel = nivel1
 )
 
 const nivel1 = new Nivel(
+  fondo = "fondoBosque.jpeg",
   nivelActual = 1,
   dificultad = dificultadAlta,
   objetosDelNivel = #{e,b,d},
@@ -163,14 +184,23 @@ const nivel1 = new Nivel(
 
 
 const nivel2 = new Batalla(
+  fondo = "fondoBosque.jpeg",
   nivelActual = 2,
   dificultad = dificultadBaja,
   objetosDelNivel = #{e,b,d},
   boss = wizardd,
 
+  siguienteNivel = pensamientoPreBatalla
+)
+
+const pensamientoPreBatalla = new NivelLore(
+  fondo = "pensamientosPreBatalla.jpeg",
+  nivelActual = pensamientoPreBatalla,
   siguienteNivel = nivel3
 )
+
 const nivel3 = new Nivel(
+  fondo = "escenario.jpeg",
   nivelActual = 3,
   dificultad = dificultadAlta,
   objetosDelNivel = #{e,b,d},
@@ -186,9 +216,10 @@ const nivel3 = new Nivel(
                      [_,_,p,p,_,_],
                      [_,a,_,a,_,a]},
 
-  siguienteNivel = nivel4
+  siguienteNivel = finalJuego
 )
 const nivel4 = new Nivel(
+  fondo = "escenario.jpeg",
   nivelActual = 4,
   dificultad = dificultadMedia,
   objetosDelNivel = #{e,b,d},
@@ -215,6 +246,7 @@ const nivel4 = new Nivel(
 )
 
 const nivel5 = new Nivel(
+  fondo = "escenario.jpeg",
   nivelActual = 5,
   dificultad = dificultadMedia,
   objetosDelNivel = #{e,b,d},
@@ -236,21 +268,47 @@ const nivel5 = new Nivel(
                      [a,a,_,a,a,a]
                      },
 
-  siguienteNivel = final
+  siguienteNivel = finalJuego
 )
-const prueba = new Nivel(
-    nivelActual = 0,
-    siguienteNivel = null, 
-    setupDelNivel = #{},
-    objetosDelNivel = #{},  
-    dificultad = dificultadBaja
-    )
+const pantallaDerrota = new NivelLore(
+  fondo = "pantallaDerrota.gif",
+  nivelActual = pensamientoPreBatalla,
+  siguienteNivel = portada
+)
 
-object final {
-  const property position = game.origin()
-  const property image = "fintest.jpg"
-  method inicializar() {
+
+object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusion.jpeg", siguienteNivel = portada){
+  override method inicializar(){
+    super()
+    game.removeVisual(lille)
+    game.removeVisual(marcadorDeVida)
     game.stop()
   }
 }
+
+/*
+(nivelActual = self(), fondo = "conclusion.jpeg",siguienteNivel = portada){
+  override method inicializar(){
+    super()
+    game.stop()
+  }
+
+  }
+
+
+const pantallaDerrota inherits NivelLore(
+  nivelActual = finalJuego,
+  fondo = "pantallaDerrota.gif", 
+  siguienteNivel = portada
+)
+
+object finalJuego inherits NivelLore( fondo = "conclusion.jpeg", siguienteNivel = portada){
+  override method inicializar(){
+    super()
+    game.stop()
+  }
+}
+
+*/
+
 

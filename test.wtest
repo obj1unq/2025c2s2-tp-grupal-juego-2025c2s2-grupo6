@@ -8,6 +8,7 @@ import niveles.*
 describe "Fall to Pieces" {
   const pared = new Pared(position = game.at(2,4))
   const prueba = new Nivel(
+    fondo = "fondoBosque.jpeg",
     nivelActual = 0,
     siguienteNivel = null, 
     setupDelNivel = #{},

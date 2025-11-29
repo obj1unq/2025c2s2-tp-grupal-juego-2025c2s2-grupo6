@@ -1,3 +1,4 @@
+import juego.*
 import personaje.*
 import wollok.game.*
 import tableroJugable.puntos
@@ -7,6 +8,7 @@ object configurarJuego {
     keyboard.d().onPressDo{lille.derecha()}
     keyboard.a().onPressDo{lille.izquierda()}
     keyboard.p().onPressDo{lille.parry()}
+    keyboard.m().onPressDo{fallToPieces.irASiguienteNivelJugador()}
   }
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
@@ -20,7 +22,20 @@ object configurarJuego {
       game.addVisual(puntos)
     }
   }
+
+  method quitarPuntos() {
+    if (game.hasVisual(puntos)){
+      game.removeVisual(puntos)
+    }
+  }
   method quitarPersonaje() {
       game.removeVisual(lille)
   }
+
+  method quitarVida(){
+    if (game.hasVisual(marcadorDeVida)){
+      game.removeVisual(marcadorDeVida)
+    }
+  }
 }
+
