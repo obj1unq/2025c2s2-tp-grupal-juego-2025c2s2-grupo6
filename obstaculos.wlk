@@ -1,17 +1,16 @@
-import personaje.*
+import personajes.*
 import wollok.game.*
-import tableroJugable.*
-
+import addons.*
 
 class Obstaculo{
   var property position
   var property image = self.imagenSinColisionar()
   const clave = self.identity()
 
-  
   method caida() {
       game.onTick(300, clave, {self.caer()})
   }
+
   method caer() {
       if (position.y() >= 0){
           position = position.down(1)
@@ -34,7 +33,6 @@ class Obstaculo{
       objeto.recibirDaño(self.dañoQueHace())
       self.image(self.imagenTrasColisionar())
       objeto.realizarAlMorir()
-      marcadorDeVida.marcarVidaDe(objeto)
     }
     
   }
@@ -105,13 +103,13 @@ class Lava inherits Obstaculo(image = "lava1.png"){
 
 class Pared inherits Obstaculo(){
   override method imagenSinColisionar() {
-    return "pared.png"
+    return "arborr.png"
   }
   override method imagenTrasColisionar(){
     return "pared-rota1.png"
   }
 }
-class Vacio inherits Obstaculo(image = ""){
+class Vacio inherits Obstaculo(image = "vacio.png"){
   override method imagenSinColisionar() = image
   override method imagenTrasColisionar() = image
   override method chocarConEfecto(p) {

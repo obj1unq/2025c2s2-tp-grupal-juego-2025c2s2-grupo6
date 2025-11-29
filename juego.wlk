@@ -1,9 +1,9 @@
-import tableroJugable.*
+import addons.*
 import configuraciones.*
 import wollok.game.*
 import niveles.*
 object fallToPieces{
-    var property nivelActual = tutorial
+    var property nivelActual = nivel1
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
@@ -23,5 +23,32 @@ object fallToPieces{
         configurarJuego.tecladoEnJuego()
         //objeto configurarControles
     }
+    method volverACargarNivel() {
+      nivelActual.clearLevel()
+      nivelActual.inicializar()
+    }
+
+    method irASiguienteNivelJugador(){
+      if (nivelActual == portada || nivelActual == carta || nivelActual == pensamientoPreBatalla  || nivelActual == pantallaDerrota){
+          self.irASiguienteNivel()
+      }  
+    }
 }
 
+
+
+
+
+class Pantalla {
+  const property position = game.at(0, 0)
+  const property image
+  method volverAlIncio() {
+    fallToPieces.nivelActual(tutorial)
+  }
+  method empezarJuego() {
+    
+  }
+  method reintentarNivel() {
+    fallToPieces.nivelActual().volverACargarNivel()
+  }
+}

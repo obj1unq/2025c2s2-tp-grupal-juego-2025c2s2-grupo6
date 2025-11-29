@@ -1,21 +1,35 @@
-import tableroJugable.*
+import addons.*
 import wollok.game.*
-import niveles.dificultadBaja
-import niveles.dificultadAlta
-class Patron  {
+import configuraciones.dificultadBaja
+import configuraciones.dificultadAlta
+
+class Patron {
+    
   const property visuales = #{}
+  var estaDisponible = true
   var tiempoDePatron = dificultadBaja.tiempoDeCaida()
+  
+  method estaDisponible() {
+    return estaDisponible 
+  }
 
   method tiempoDeCaida(tiempoDeDificultad) {
     tiempoDePatron = tiempoDeDificultad
   }
+
   method añadirObstaculos(patron) {
-    (1..patron.size()-1).forEach({x => visuales.add(patron.get(x).crear(game.at(x,10)))})
+    (1..patron.size()-1).forEach({x => 
+      const obs = patron.get(x).crear(game.at(x,10))
+      visuales.add(obs)
+    })
   }
+
   method startPatron() {
+    estaDisponible = false // El patrón no esta disponible
     self.agregarVisuales()
     self.caida()
   }
+
   method agregarVisuales() {
     visuales.forEach({visual => game.addVisual(visual)})
   }
@@ -23,13 +37,13 @@ class Patron  {
   method caida() {
     game.onTick(tiempoDePatron, self.identity(), {self.caerObjetos()})
   }
+
   method caerObjetos() {
-    if (visuales.anyOne().position().y() != 0){
-      visuales.forEach({visual => visual.caer()})  
-    }
-    else{
+    visuales.forEach({visual => visual.caer()})   
+    
+    if (visuales.any({obs => obs.position().y() < 0})){
       self.ocultarVisuales()
-      self.stop()
+      self.pararPatron()
     }
   }
 
@@ -37,9 +51,11 @@ class Patron  {
     visuales.forEach({visual => visual.ocultar()})
   }
 
-  method stop() {
+  method pararPatron() {
     game.removeTickEvent(self.identity())
+    estaDisponible = true // El patron vuelve a estar disponible para el Nivel
   }
+
 }
 
 object patronFactory {
