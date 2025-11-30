@@ -15,7 +15,7 @@ object configurarJuego {
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
-      game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
+      //game.onCollideDo(lille, {objeto => if(!lille.estoyMuerto() || lille.puntosObtenidos() == lille.puntosParaGanar()) {objeto.chocarConEfecto(lille)}})
       game.addVisual(marcadorDeVida)
     }
   }
@@ -35,7 +35,7 @@ object configurarJuego {
   }
   method quitarTimer() {
     if (game.hasVisual(timer)){
-      game.removeVisual(timer)
+      timer.quitarTimer()
     }
   }
   method quitarPuntos() {

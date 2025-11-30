@@ -49,7 +49,6 @@ class Villano inherits Personaje(position = game.at(3,9)) {
     game.say(self,"GAME OVER")
     game.removeTickEvent(claveDeAtaque)
     game.schedule(2000, {game.removeVisual(self) fallToPieces.irASiguienteNivel()})
-    //game.removeTickEvent("moveRand")
   }
 }
 
@@ -60,6 +59,10 @@ object juan inherits Villano (hechizosMagicos = #{a,u},image = "wizardd.gif", vi
 
 object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vida = 100){
   var property puntosObtenidos = 0
+  method imagenAlMorir(){
+    self.image("pjdead.png")
+    game.schedule(1200, { self.image("gifg.gif") })
+  }
   method cambiarEstadoEscudo(bool) {
     tieneEscudoActivo = bool
     marcadorDeVida.marcarVidaDe(self)
@@ -90,24 +93,14 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   method obtenerPuntos(puntos) {
     if (puntosObtenidos >= self.puntosParaGanar()){
-      game.say(self, "You WIN!!")
+      game.say(self, "nivel: " + fallToPieces.nivelActual()) //You WIN!!
       puntosObtenidos = 0
       fallToPieces.irASiguienteNivel()
-      //game.stop()
     }else{
       puntosObtenidos += puntos
     }
   }
-  /*
-  override method accionAlMorir() {
-    game.say(self,"GAME OVER")
-    self.vida(100)
-    marcadorDeVida.marcarVidaDe(self)
-    //fallToPieces.ponerPantallaDeMuerte()
-    //fallToPieces.nivelActual().clearLevel()
-    //game.stop()
-  }
-  */
+
   method reiniciarEstadisticas() {
     self.puntosObtenidos(0)
     self.vida(100)
@@ -115,20 +108,20 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   override method accionAlMorir() {
   //  game.say(self,"GAME OVER")
-    fallToPieces.nivelActual().clearLevel()
-    pantallaDerrota.siguienteNivel(fallToPieces.nivelActual())
-    configurarJuego.quitarInterfaz()
-    self.reiniciarEstadisticas()
-    fallToPieces.nivelActual(pantallaDerrota)
-    pantallaDerrota.inicializar()
+    self.imagenAlMorir()
+    game.schedule(1000, {fallToPieces.IrAPantallaDeMuerte()})
   //  game.stop()
   }
   method izquierda() {
-	position = game.at(1.max(position.x() - 1), position.y()) 
+    if (!self.estoyMuerto()){
+	    position = game.at(1.max(position.x() - 1), position.y()) 
+    }
   }
 	
   method derecha() {
-	position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
+    if (!self.estoyMuerto()){
+  	  position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
+    }
   }
 }
 
@@ -222,7 +215,7 @@ object ataqueLluvia inherits Ataque{
     personaje.position(game.at(columna, personaje.position().y()))
     self.ataqueNormal(personaje) 
     const siguienteColumna = columna + 1
-    if (siguienteColumna < game.width() - 1){ // Usamos < para no exceder los límites
+    if (siguienteColumna < game.width() - 1){ 
       game.schedule(500, { self.atacarEnPosicion(personaje, siguienteColumna) })
     } else {
       personaje.cambiarPosicion()

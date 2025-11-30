@@ -1,4 +1,5 @@
 import personajes.*
+import juego.fallToPieces
 import wollok.game.*
 import obstaculos.*
 import objetos.*
@@ -17,6 +18,7 @@ class Nivel {
   method clearLevel() {
     //setupDelNivel.clear()
     self.ocultarPatrones()
+    self.ocultarObjetos()
     game.removeTickEvent("mostrarPatronNuevo")
     game.removeTickEvent("puntosPorSegundo")
     game.removeTickEvent("agregarObjeto")
@@ -38,6 +40,9 @@ class Nivel {
   }
   method ocultarPatrones() {
     patronesDelNivel.forEach({patron => patron.ocultarVisuales()}) 
+  }
+  method ocultarObjetos() {
+    objetosDelNivel.forEach({obj => obj.ocultar()}) 
   }
   method crearPatron(setup) {
     const pat = patronFactory.crear() 
@@ -100,7 +105,6 @@ class Nivel {
 
 class Batalla inherits NivelLore(){
   const boss 
-
   override method inicializar() {
     super()
     self.añadirPersonaje()
@@ -127,7 +131,7 @@ class NivelLore{
     return siguienteNivel
   }
   method clearLevel() {
-    //configurarJuego.quitarPersonaje()
+    configurarJuego.quitarInterfaz()
   }
 
   method inicializar() {        //inicializador del nivel.
@@ -156,7 +160,7 @@ const pensamientoPreBatalla = new NivelLore(
 const pantallaDerrota = new NivelLore(
   fondo = "pantallaDerrota.gif",
   nivelActual = pensamientoPreBatalla,
-  siguienteNivel = portada
+  siguienteNivel = fallToPieces.nivelActual()
 )
 
 
