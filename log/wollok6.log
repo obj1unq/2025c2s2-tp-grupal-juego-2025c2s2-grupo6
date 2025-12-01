@@ -1269,3 +1269,16 @@
 {"level":"info","message":"⌛ Building environment","timeElapsed":345,"timestamp":"2025-12-01T04:09:49.285Z"}
 {"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":170,"timestamp":"2025-12-01T04:09:49.532Z"}
 {"exitCode":"SIGHUP","level":"info","message":"👾 Game executed game.juego on c:\\Users\\maria\\OneDrive\\Desktop\\Objetos 1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6","timeElapsed":43610,"timestamp":"2025-12-01T04:09:51.887Z"}
+{"level":"info","message":"🚀 Program executed \u001b[3m\u001b[34mgame.juego\u001b[39m\u001b[23m on \u001b[3m\u001b[34mc:\\Users\\maria\\OneDrive\\Desktop\\Objetos 1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6\u001b[39m\u001b[23m","ok":true,"timeElapsed":4492,"timestamp":"2025-12-01T04:09:59.256Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":228,"timestamp":"2025-12-01T04:11:14.241Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":221,"timestamp":"2025-12-01T04:11:14.463Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":206,"timestamp":"2025-12-01T04:11:16.594Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":202,"timestamp":"2025-12-01T04:11:16.797Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":219,"timestamp":"2025-12-01T04:11:18.538Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":215,"timestamp":"2025-12-01T04:11:18.754Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":186,"timestamp":"2025-12-01T04:11:20.361Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":193,"timestamp":"2025-12-01T04:11:20.554Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":303,"timestamp":"2025-12-01T04:11:47.930Z"}
+{"level":"info","message":"⌛ Validating configuraciones.wlk","timeElapsed":193,"timestamp":"2025-12-01T04:11:48.134Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":163,"timestamp":"2025-12-01T04:11:48.298Z"}
+{"level":"info","message":"⌛ Validating game.wpgm","timeElapsed":152,"timestamp":"2025-12-01T04:11:48.451Z"}
