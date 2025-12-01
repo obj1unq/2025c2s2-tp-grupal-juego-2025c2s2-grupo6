@@ -158,66 +158,6 @@ const carta = new NivelLore(
   siguienteNivel = tutorial
 )
 
-class NivelLore{
-  const property nivelActual
-  var property siguienteNivel 
-  const property fondo 
-  method añadirPersonaje() {          
-    configurarJuego.agregarPersonaje()
-    configurarJuego.agregarPuntos()
-    configurarJuego.agregarTimer()
-  }
-  method cambiarEscenario(){
-    escenario.image(fondo)
-  }
-  method siguienteNivel() {
-    return siguienteNivel
-  }
-  method clearLevel() {
-    //configurarJuego.quitarPersonaje()
-  }
-
-  method inicializar() {        //inicializador del nivel.
-    self.cambiarEscenario()
-  }
-}
-/////
-const portada = new NivelLore(
-  fondo = "portada.gif",
-  nivelActual = portada,
-  siguienteNivel = carta
-)
-
-const carta = new NivelLore(
-  fondo = "cartaInicio.jpeg",
-  nivelActual = carta,
-  siguienteNivel = tutorial
-)
-
-const pensamientoPreBatalla = new NivelLore(
-  fondo = "pensamientosPreBatalla.jpeg",
-  nivelActual = pensamientoPreBatalla,
-  siguienteNivel = nivel2
-)
-
-const pantallaDerrota = new NivelLore(
-  fondo = "pantallaDerrota.gif",
-  nivelActual = pensamientoPreBatalla,
-  siguienteNivel = portada
-)
-
-
-object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusion.jpeg", siguienteNivel = portada){
-  override method inicializar(){
-    super()
-    game.removeVisual(lille)
-    game.removeVisual(marcadorDeVida)
-    game.stop()
-  }
-}
-
-////////////////
-
 const tutorial = new Nivel(
   nivelActual = 0,
   dificultad = dificultadBaja,
@@ -245,13 +185,7 @@ const nivel1 = new Nivel(
                      [_,p,r,r,p],
                      [_,p,_,p,_]},
                      
-  siguienteNivel = primerBatalla
-)
-const primerBatalla = new Batalla(
-  fondo = "fondoBosque.jpeg",
-  nivelActual = primerBatalla,
-  boss = juan,
-  siguienteNivel = pensamientoPreBatalla
+  siguienteNivel = nivel2
 )
 const nivel2 = new Nivel(
   nivelActual = 2,
