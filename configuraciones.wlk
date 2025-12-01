@@ -15,8 +15,7 @@ object configurarJuego {
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
-      //game.onCollideDo(lille, {objeto => if(!lille.estoyMuerto() || lille.puntosObtenidos() == lille.puntosParaGanar()) {objeto.chocarConEfecto(lille)}})
-      game.addVisual(marcadorDeVida)
+      self.agregarVida()
     }
   }
   method agregarPuntos() {
@@ -25,7 +24,10 @@ object configurarJuego {
     }
   }
   method quitarPersonaje() {
+    if (game.hasVisual(lille)){
       game.removeVisual(lille)
+      self.quitarVida()
+    }
   }
 
   method agregarTimer() {
@@ -49,9 +51,17 @@ object configurarJuego {
       game.removeVisual(marcadorDeVida)
     }
   }
+
+  method agregarVida() {
+    if(!game.hasVisual(marcadorDeVida)){
+      game.addVisual(marcadorDeVida)
+    }
+  }
+  method agregarInterfaz(){
+    self.agregarPuntos()
+    self.agregarTimer()
+  }
   method quitarInterfaz() {
-    self.quitarPersonaje()
-    self.quitarVida()
     self.quitarPuntos()
     self.quitarTimer()
   }
@@ -83,7 +93,7 @@ object dificultadMedia inherits Dificultad{
 
 object dificultadAlta inherits Dificultad{
   override method tiempoDeAparicion() {
-    return 300 //500
+    return 400 //500
   }
   override method tiempoDeCaida() {
     return 100

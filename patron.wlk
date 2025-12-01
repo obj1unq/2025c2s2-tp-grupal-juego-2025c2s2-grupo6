@@ -9,6 +9,9 @@ class Patron {
   var estaDisponible = true
   var tiempoDePatron = dificultadBaja.tiempoDeCaida()
   
+  method borrarVisuales() {
+    visuales.clear()
+  }
   method estaDisponible() {
     return estaDisponible 
   }
@@ -18,8 +21,8 @@ class Patron {
   }
 
   method añadirObstaculos(patron) {
-    (1..patron.size()-1).forEach({x => 
-      const obs = patron.get(x).crear(game.at(x,10))
+    (0..patron.size()-1).forEach({x => 
+      const obs = patron.get(x).crear(game.at(x+1,10))
       visuales.add(obs)
     })
   }

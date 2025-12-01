@@ -5,7 +5,7 @@ import niveles.*
 import personajes.lille
 
 object fallToPieces{
-    var property nivelActual = nivel1
+    var property nivelActual = portada
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
@@ -13,9 +13,10 @@ object fallToPieces{
     }
     method IrAPantallaDeMuerte() {
       nivelActual.clearLevel()
+      pantallaDerrota.siguienteNivel(nivelActual)
       nivelActual = pantallaDerrota 
-      configurarJuego.quitarInterfaz()
       lille.reiniciarEstadisticas()
+      //configurarJuego.quitarInterfaz()
       pantallaDerrota.inicializar()
     }
     method inicializar() {          //metodo que inicializa el nivel actual del juego.
@@ -33,32 +34,10 @@ object fallToPieces{
         game.onCollideDo(lille, {objeto => if(!lille.estoyMuerto() || lille.puntosObtenidos() == lille.puntosParaGanar()) {objeto.chocarConEfecto(lille)}})
         //objeto configurarControles
     }
-    method volverACargarNivel() {
-      nivelActual.clearLevel()
-      nivelActual.inicializar()
-    }
 
     method irASiguienteNivelJugador(){
       if (nivelActual == portada || nivelActual == carta || nivelActual == pensamientoPreBatalla  || nivelActual == pantallaDerrota){
           self.irASiguienteNivel()
       }  
     }
-}
-
-
-
-
-
-class Pantalla {
-  const property position = game.at(0, 0)
-  const property image
-  method volverAlIncio() {
-    fallToPieces.nivelActual(tutorial)
-  }
-  method empezarJuego() {
-    
-  }
-  method reintentarNivel() {
-    fallToPieces.nivelActual().volverACargarNivel()
-  }
 }
