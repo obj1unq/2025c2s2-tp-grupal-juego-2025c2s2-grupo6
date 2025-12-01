@@ -4,7 +4,7 @@ import personajes.*
 import addons.posicion
 
 
-class Objeto {
+class Objeto {//mover a addons  
   var property position = posicion.randomizarEnFila(10)
   const clave = self.identity()
   const sonido
@@ -72,15 +72,15 @@ object diamanteValioso inherits Objeto(sonido = "bigWin.mp3"){
 
     override method efectoDeChoque(objeto) {
       game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+200)
-        objeto.obtenerPuntos(200)
+        objeto.obtenerPuntos(20)
     }
 }
 
-class PiedraPreciosa inherits Objeto(sonido = "littleWin.mp3") {
+object piedraPreciosa inherits Objeto(sonido = "littleWin.mp3") {
     var property image    = "piedraPreciosa.png"
 
     override method efectoDeChoque(objeto) {
       game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+100)
-        objeto.obtenerPuntos(100)
+        objeto.obtenerPuntos(10)
     }
 }

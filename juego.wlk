@@ -3,7 +3,7 @@ import configuraciones.*
 import wollok.game.*
 import niveles.*
 object fallToPieces{
-    var property nivelActual = nivel1
+    var property nivelActual = portada
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
@@ -23,7 +23,7 @@ object fallToPieces{
         configurarJuego.tecladoEnJuego()
         //objeto configurarControles
     }
-    method volverACargarNivel() {
+    method volverACargarNivel() { //sin uso por ahora
       nivelActual.clearLevel()
       nivelActual.inicializar()
     }
@@ -39,7 +39,7 @@ object fallToPieces{
 
 
 
-class Pantalla {
+class Pantalla { //sacar sin uso
   const property position = game.at(0, 0)
   const property image
   method volverAlIncio() {

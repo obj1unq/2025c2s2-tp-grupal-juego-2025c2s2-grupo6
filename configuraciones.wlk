@@ -43,7 +43,12 @@ object configurarJuego {
       game.removeVisual(puntos)
     }
   }
+  method agregarVida(){
+        if (!game.hasVisual(marcadorDeVida)){
+      game.addVisual(marcadorDeVida)
+    }
 
+  }
   method quitarVida(){
     if (game.hasVisual(marcadorDeVida)){
       game.removeVisual(marcadorDeVida)

@@ -23,9 +23,6 @@ class Nivel {
     patronesDelNivel.clear()
     //configurarJuego.quitarPersonaje()
   }
-  method siguienteNivel() {
-    return siguienteNivel
-  }
   method comenzarACaer() {
     //llamo a un patron distinto cada tiempo de dificultad segundos
     if (!patronesDelNivel.isEmpty()){
