@@ -28,7 +28,7 @@ object fallToPieces{
         game.title("fall to pieces")
         musicaPrincipal.shouldLoop(true)
         game.schedule(500, { musicaPrincipal.play()} )
-        musicaPrincipal.volume(0.3)
+        musicaPrincipal.volume(0.1)
         nivelActual.inicializar()
         configurarJuego.tecladoEnJuego()
         game.onCollideDo(lille, {objeto => if(!lille.estoyMuerto() || lille.puntosObtenidos() == lille.puntosParaGanar()) {objeto.chocarConEfecto(lille)}})
