@@ -15,13 +15,23 @@ object configurarJuego {
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
-      game.addVisual(barraProgreso)
+      self.agregarBarra()
       self.agregarVida()
     }
   }
   method agregarPuntos() {
     if (!game.hasVisual(puntos)){
       game.addVisual(puntos)
+    }
+  }
+  method agregarBarra() {
+    if(!game.hasVisual(barraProgreso)){
+      game.addVisual(barraProgreso)
+    }
+  }
+  method quitarBarra() {
+    if (game.hasVisual(barraProgreso)){
+      game.removeVisual(barraProgreso)
     }
   }
   method quitarPersonaje() {
@@ -46,11 +56,7 @@ object configurarJuego {
       game.removeVisual(puntos)
     }
   }
-  method quitarProgreso() {
-    if (game.hasVisual(barraProgreso)){
-      game.removeVisual(barraProgreso)
-    }
-  }
+
   method quitarVida(){
     if (game.hasVisual(marcadorDeVida)){
       game.removeVisual(marcadorDeVida)
@@ -67,9 +73,9 @@ object configurarJuego {
     self.agregarTimer()
   }
   method quitarInterfaz() {
+    self.quitarBarra()
     self.quitarPuntos()
     self.quitarTimer()
-    self.quitarProgreso()
   }
 }
 
@@ -113,5 +119,4 @@ object dificultadExtreme inherits Dificultad{
   override method tiempoDeCaida() {
     return 100
   }
-
 }

@@ -63,3 +63,4 @@ object timer {
   }
   method chocarConEfecto(objeto){}
 }
+
