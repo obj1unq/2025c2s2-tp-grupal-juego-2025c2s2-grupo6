@@ -15,6 +15,8 @@ object configurarJuego {
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
+      game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
+      game.addVisual(barraProgreso)
       self.agregarVida()
     }
   }
@@ -45,7 +47,11 @@ object configurarJuego {
       game.removeVisual(puntos)
     }
   }
-
+  method quitarProgreso() {
+    if (game.hasVisual(barraProgreso)){
+      game.removeVisual(barraProgreso)
+    }
+  }
   method quitarVida(){
     if (game.hasVisual(marcadorDeVida)){
       game.removeVisual(marcadorDeVida)
@@ -64,6 +70,7 @@ object configurarJuego {
   method quitarInterfaz() {
     self.quitarPuntos()
     self.quitarTimer()
+    self.quitarProgreso()
   }
 }
 
@@ -107,4 +114,5 @@ object dificultadExtreme inherits Dificultad{
   override method tiempoDeCaida() {
     return 100
   }
+
 }

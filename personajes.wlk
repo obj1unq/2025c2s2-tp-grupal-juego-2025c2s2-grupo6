@@ -74,7 +74,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   method cambiarEstadoEscudo(bool) {
     tieneEscudoActivo = bool
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
   method puntosParaGanar() {
     return 200
@@ -85,14 +85,14 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }else{
       vida = vida + 25 
   }
-  marcadorDeVida.marcarVidaDe(self)
+  marcadorDeVida.marcarEstadisticaDe(self)
   }
 
   override method recibirDaño(cantidad){
     if(!self.tieneEscudoActivo()){
       super(cantidad)
     }
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
 
   method parry() {
@@ -102,18 +102,19 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   method obtenerPuntos(puntos) {
     if (puntosObtenidos >= self.puntosParaGanar()){
-      game.say(self, "levelUP") //You WIN!!
+      game.say(self, "You WIN!!")
       puntosObtenidos = 0
       fallToPieces.irASiguienteNivel()
+      //game.stop()
     }else{
       puntosObtenidos += puntos
+      barraProgreso.marcarEstadisticaDe(self)
     }
   }
-
   method reiniciarEstadisticas() {
     self.puntosObtenidos(0)
     self.vida(100)
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
   override method accionAlMorir() {
     self.imagenAlMorir()
@@ -132,59 +133,83 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
 }
 
-object marcadorDeVida {
-  var property position = game.at(0, 9)
-  var property image = "vida 100.png"
-  
-  method text() {
-    return lille.vida().toString()
-  }
-  method textColor() = paleta.colorDeTexto()
-  method marcarVidaDe(personaje) {
-    if(personaje.tieneEscudoActivo()){
-      self.marcarVidaConEscudoDe(personaje)
+class Marcador{
+
+  var property image 
+  method marcarEstadisticaDe(personaje){
+    if(self.puntosARevisar() == 200){
+      image = self.imagenTipoMarcador() + "100.png"
+    } else if(self.puntosARevisar().between(180, 199)){
+      image = self.imagenTipoMarcador()  + "90.png"
+    } else if(self.puntosARevisar().between(160, 179)){
+      image = self.imagenTipoMarcador()   + "80.png"
+    } else if(self.puntosARevisar().between(140, 159)){
+      image = self.imagenTipoMarcador()  + "70.png"
+    } else if(self.puntosARevisar().between(120, 139)){
+      image = self.imagenTipoMarcador()  + "60.png"
+    } else if(self.puntosARevisar().between(100, 119)){
+      image = self.imagenTipoMarcador()  + "50.png"
+    } else if(self.puntosARevisar().between(80, 99)){
+      image = self.imagenTipoMarcador()  + "40.png"
+    } else if(self.puntosARevisar().between(60, 79)){
+      image = self.imagenTipoMarcador()  + "30.png"
+    } else if(self.puntosARevisar().between(40, 59)){
+      image = self.imagenTipoMarcador()  + "20.png"
+    } else if(self.puntosARevisar().between(20, 39)){
+      image = self.imagenTipoMarcador()  + "10.png"
     } else {
-      self.marcarVidaSinEscudoDe(personaje)
+      image = self.imagenTipoMarcador()  + "0.png"
+    }
+ }
+  method imagenTipoMarcador(){
+    return ""
+  }
+  method puntosARevisar() {
+    return
+  }
+
+}
+
+object marcadorDeVida inherits Marcador(image = "vida 100.png") {
+  const property position = game.at(0, 9)
+
+  method estadoEscudoDe(personaje) {
+    if(personaje.tieneEscudoActivo()){
+      return " escudo"
+    } else {
+      return ""
     }
   }
 
-  method marcarVidaSinEscudoDe(personaje) {
-    //Proposito: marcar la vida en rojo
-
-  if(personaje.vida() == 100){
-    image = "vida 100.png"
-  } else if(personaje.vida().between(80, 99)){
-    image = "vida 99 - 80.png"
-  } else if(personaje.vida().between(60, 79)){
-    image = "vida 79 - 60.png"
-  } else if(personaje.vida().between(30, 59)){
-    image = "vida 59 - 30.png"
-  } else if(personaje.vida().between(15, 29)){
-    image = "vida 15 - 0.png"
-  } else {
-    image = "vida 0.png"
+  override method imagenTipoMarcador() {
+    return "vida" + self.estadoEscudoDe(lille)
   }
 
-  }
-
-  method marcarVidaConEscudoDe(personaje) {
-    // Proposito: Marcar la vida del personaje en azul
-
-    if(personaje.vida() == 100){
-        image = "vida 100 escudo.png"
-      } else if(personaje.vida().between(80, 99)){
-        image = "vida 99 - 80 escudo.png"
-      } else if(personaje.vida().between(60, 79)){
-        image = "vida 79 - 60 escudo.png"
-      } else if(personaje.vida().between(30, 59)){
-        image = "vida 59 - 30 escudo.png"
-      } else if(personaje.vida().between(15, 29)){
-        image = "vida 15 - 0 escudo.png"
-      } else {
-        image = "vida 0.png"
-      }
+  override method puntosARevisar(){
+    return lille.vida() * 2
   }
 }
+
+
+class Barrita inherits Marcador{
+  method color()
+  override method puntosARevisar(){
+    return lille.puntosObtenidos()
+  }
+  override method imagenTipoMarcador() {
+    return "progreso" + self.color()
+  }
+
+}
+
+object barraProgreso inherits Barrita(image = "progreso" + self.color() + "0.png") {
+  const property position = game.at(7, 1)
+   override method puntosARevisar() = lille.puntosObtenidos()
+   override method color() {
+    return "amarillo"
+  }
+}
+
 
 class Ataque {
   const property hechizosUsados = #{}
