@@ -1009,3 +1009,11 @@
 {"level":"info","message":"🚀 Program executed \u001b[3m\u001b[34mgame.juego\u001b[39m\u001b[23m on \u001b[3m\u001b[34mc:\\Users\\maria\\OneDrive\\Desktop\\Objetos 1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6\u001b[39m\u001b[23m","ok":true,"timeElapsed":3607,"timestamp":"2025-12-01T06:19:42.853Z"}
 {"exitCode":"SIGHUP","level":"info","message":"👾 Game executed game.juego on c:\\Users\\maria\\OneDrive\\Desktop\\Objetos 1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6","timeElapsed":53139,"timestamp":"2025-12-01T06:20:32.385Z"}
 {"level":"info","message":"🚀 Program executed \u001b[3m\u001b[34mgame.juego\u001b[39m\u001b[23m on \u001b[3m\u001b[34mc:\\Users\\maria\\OneDrive\\Desktop\\Objetos 1\\2025c2s2-tp-grupal-juego-2025c2s2-grupo6\u001b[39m\u001b[23m","ok":true,"timeElapsed":1238,"timestamp":"2025-12-01T06:20:35.122Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":189,"timestamp":"2025-12-01T06:21:16.853Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":199,"timestamp":"2025-12-01T06:21:17.053Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":156,"timestamp":"2025-12-01T06:21:17.774Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":139,"timestamp":"2025-12-01T06:21:17.914Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":157,"timestamp":"2025-12-01T06:21:19.042Z"}
+{"level":"info","message":"⌛ Building environment","timeElapsed":147,"timestamp":"2025-12-01T06:21:19.190Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":154,"timestamp":"2025-12-01T06:21:19.344Z"}
+{"level":"info","message":"⌛ Validating personajes.wlk","timeElapsed":134,"timestamp":"2025-12-01T06:21:19.478Z"}

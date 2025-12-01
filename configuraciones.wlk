@@ -45,6 +45,12 @@ object configurarJuego {
     }
   }
 
+  method quitarProgreso() {
+    if (game.hasVisual(barraProgreso)){
+      game.removeVisual(barraProgreso)
+    }
+  }
+
   method quitarVida(){
     if (game.hasVisual(marcadorDeVida)){
       game.removeVisual(marcadorDeVida)
@@ -55,6 +61,7 @@ object configurarJuego {
     self.quitarVida()
     self.quitarPuntos()
     self.quitarTimer()
+    self.quitarProgreso()
   }
 }
 
