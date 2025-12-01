@@ -133,6 +133,45 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
 }
 
+
+class Marcador{
+
+  var property image 
+  method marcarEstadisticaDe(personaje){
+    if(self.puntosARevisar() == 200){
+      image =  + "100.png"
+    } else if(self.puntosARevisar().between(175, 199)){
+      image = "progreso" + "90.png"
+    } else if(self.puntosARevisar().between(160, 174)){
+      image = "progreso"  + "80.png"
+    } else if(self.puntosARevisar().between(130, 159)){
+      image = "progreso" + "70.png"
+    } else if(self.puntosARevisar().between(100, 129)){
+      image = "progreso" + "60.png"
+    } else if(self.puntosARevisar().between(80, 99)){
+      image = "progreso" + "50.png"
+    } else if(self.puntosARevisar().between(50, 79)){
+      image = "progreso" + "40.png"
+    } else if(self.puntosARevisar().between(30, 49)){
+      image = "progreso" + "30.png"
+    } else if(self.puntosARevisar().between(21, 29)){
+      image = "progreso" + "20.png"
+    } else if(self.puntosARevisar().between(1, 20)){
+      image = "progreso" + "10.png"
+    } else {
+      image = "progreso" + "0.png"
+    }
+ }
+  method imagenTipoMarcador()
+  method puntosARevisar() {
+    return 
+  }
+
+
+}
+
+
+
 object marcadorDeVida {
   var property position = game.at(0, 9)
   var property image = "vida 100.png"
@@ -141,55 +180,36 @@ object marcadorDeVida {
     return lille.vida().toString()
   }
   method textColor() = paleta.colorDeTexto()
+
   method marcarVidaDe(personaje) {
-    if(personaje.tieneEscudoActivo()){
-      self.marcarVidaConEscudoDe(personaje)
-    } else {
-      self.marcarVidaSinEscudoDe(personaje)
-    }
-  }
-
-  method marcarVidaSinEscudoDe(personaje) {
-    //Proposito: marcar la vida en rojo
-
-  if(personaje.vida() == 100){
-    image = "vida 100.png"
-  } else if(personaje.vida().between(80, 99)){
-    image = "vida 99 - 80.png"
-  } else if(personaje.vida().between(60, 79)){
-    image = "vida 79 - 60.png"
-  } else if(personaje.vida().between(30, 59)){
-    image = "vida 59 - 30.png"
-  } else if(personaje.vida().between(15, 29)){
-    image = "vida 15 - 0.png"
-  } else {
-    image = "vida 0.png"
-  }
-
-  }
-
-  method marcarVidaConEscudoDe(personaje) {
-    // Proposito: Marcar la vida del personaje en azul
-
     if(personaje.vida() == 100){
-        image = "vida 100 escudo.png"
-      } else if(personaje.vida().between(80, 99)){
-        image = "vida 99 - 80 escudo.png"
-      } else if(personaje.vida().between(60, 79)){
-        image = "vida 79 - 60 escudo.png"
-      } else if(personaje.vida().between(30, 59)){
-        image = "vida 59 - 30 escudo.png"
-      } else if(personaje.vida().between(15, 29)){
-        image = "vida 15 - 0 escudo.png"
-      } else {
-        image = "vida 0.png"
-      }
+    image = "vida 100" + self.estadoEscudoDe(personaje) + ".png"
+  } else if(personaje.vida().between(80, 99)){
+    image = "vida 99 - 80" + self.estadoEscudoDe(personaje) + ".png"
+  } else if(personaje.vida().between(60, 79)){
+    image = "vida 79 - 60" + self.estadoEscudoDe(personaje) + ".png"
+  } else if(personaje.vida().between(30, 59)){
+    image = "vida 59 - 30" + self.estadoEscudoDe(personaje) + ".png"
+  } else if(personaje.vida().between(15, 29)){
+    image = "vida 15 - 0" + self.estadoEscudoDe(personaje) + ".png"
+  } else {
+    image = "vida 0" + self.estadoEscudoDe(personaje) + ".png"
+  }
+  }
+
+  method estadoEscudoDe(personaje) {
+    if(personaje.tieneEscudoActivo()){
+      return " escudo"
+    } else {
+      return ""
+    }
   }
 }
 
+
 class Barrita {
   var property image
-  var property position = game.at(9, 1)
+  var property position = game.at(0, game.width() - 1)
   method color()
   method puntosARevisar()
 
