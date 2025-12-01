@@ -8,7 +8,9 @@
 
 ## Capturas
 
-(agregar)
+![Menu](https://github.com/obj1unq/2025c2s2-tp-grupal-juego-2025c2s2-grupo6/tree/main/assets/screen0.png)
+![In-game](https://github.com/obj1unq/2025c2s2-tp-grupal-juego-2025c2s2-grupo6/tree/main/assets/screen1.png)
+![](https://github.com/obj1unq/2025c2s2-tp-grupal-juego-2025c2s2-grupo6/tree/main/assets/screen2.png)
 
 ## Reglas de Juego / Instrucciones
 Esquiva los obstaculos del camino para llegar a tu castillo

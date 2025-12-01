@@ -115,6 +115,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
     self.puntosObtenidos(0)
     self.vida(100)
     marcadorDeVida.marcarEstadisticaDe(self)
+    barraProgreso.marcarEstadisticaDe(self)
   }
   override method accionAlMorir() {
     self.imagenAlMorir()
