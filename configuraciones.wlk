@@ -107,4 +107,79 @@ object dificultadExtreme inherits Dificultad{
   override method tiempoDeCaida() {
     return 100
   }
+
+  method agregarTimer() {
+    if (!game.hasVisual(timer)){
+      timer.startTimer()
+    }
+  }
+  method quitarTimer() {
+    if (game.hasVisual(timer)){
+      game.removeVisual(timer)
+    }
+  }
+  method quitarPuntos() {
+    if (game.hasVisual(puntos)){
+      game.removeVisual(puntos)
+    }
+  }
+  method agregarVida(){
+        if (!game.hasVisual(marcadorDeVida)){
+      game.addVisual(marcadorDeVida)
+    }
+
+  }
+  method quitarVida(){
+    if (game.hasVisual(marcadorDeVida)){
+      game.removeVisual(marcadorDeVida)
+    }
+  }
+  method quitarInterfaz() {
+    self.quitarPersonaje()
+    self.quitarVida()
+    self.quitarPuntos()
+    self.quitarTimer()
+  }
+}
+
+class Dificultad {
+  
+  method tiempoDeAparicion() 
+  method tiempoDeCaida()
+}
+
+object dificultadBaja inherits Dificultad{
+  override method tiempoDeAparicion() {
+    return 800
+  }
+  override method tiempoDeCaida() {
+    return 200
+  }
+}
+
+object dificultadMedia inherits Dificultad{
+  override method tiempoDeAparicion() {
+    return 500 //800
+  }
+  override method tiempoDeCaida() {
+    return 100
+  }
+}
+
+object dificultadAlta inherits Dificultad{
+  override method tiempoDeAparicion() {
+    return 300 //500
+  }
+  override method tiempoDeCaida() {
+    return 100
+  }
+}
+
+object dificultadExtreme inherits Dificultad{
+  override method tiempoDeAparicion() {
+    return 200 //500
+  }
+  override method tiempoDeCaida() {
+    return 100
+  }
 }
