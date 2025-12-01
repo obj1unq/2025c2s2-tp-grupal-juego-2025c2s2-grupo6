@@ -8,7 +8,6 @@ import patron.*
 import configuraciones.*
 
 class NivelLore{
-  const property nivelActual
   var property siguienteNivel 
   const property fondo 
   method puedeCambiarPantalla() = true
@@ -121,7 +120,7 @@ class Batalla inherits NivelLore{
   override method inicializar() {
     super()
     self.agregarLille()
-    //game.addVisual(lille)
+    configurarJuego.quitarBarra()
     game.addVisual(boss)
     game.schedule(3000, {boss.iniciarAtaque()})
     game.onCollideDo(boss, {objeto => objeto.chocarConEfecto(boss)})
@@ -131,30 +130,26 @@ class Batalla inherits NivelLore{
     boss.ocultar()
   }
 }
-object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusion.jpeg", siguienteNivel = portada){
+object finalJuego inherits NivelLore(fondo = "conclusion.jpeg", siguienteNivel = portada){
 
 }
 
 const pantallaDerrota = new NivelLore(
   fondo = "pantallaDerrota.gif",
-  nivelActual = pensamientoPreBatalla,
   siguienteNivel = fallToPieces.nivelActual()
 )
 
 const portada = new NivelLore(
   fondo = "portada.gif",
-  nivelActual = portada,
   siguienteNivel = carta
 )
 
 const carta = new NivelLore(
   fondo = "cartaInicio.jpeg",
-  nivelActual = carta,
   siguienteNivel = tutorial
 )
 
 const tutorial = new Nivel(
-  nivelActual = 0,
   dificultad = dificultadBaja,
   objetosDelNivel = #{escudoMagico},
   setupDelNivel = #{ [p,r,r,_,_],
@@ -169,7 +164,6 @@ const tutorial = new Nivel(
 )
 
 const nivel1 = new Nivel(
-  nivelActual = 1,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -183,7 +177,6 @@ const nivel1 = new Nivel(
   siguienteNivel = nivel2
 )
 const nivel2 = new Nivel(
-  nivelActual = 2,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -201,7 +194,6 @@ const nivel2 = new Nivel(
   siguienteNivel = nivel3
 )
 const nivel3 = new Nivel(
-  nivelActual = 3,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -235,7 +227,6 @@ const nivel3 = new Nivel(
 )
 
 const nivel4 = new Nivel(
-  nivelActual = 4,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -261,20 +252,17 @@ const nivel4 = new Nivel(
 
 const primerBatalla = new Batalla(
   fondo = "fondoBosque.jpeg",
-  nivelActual = primerBatalla,
   boss = wizard,
   siguienteNivel = pensamientoPreBatalla
 )
 const pensamientoPreBatalla = new NivelLore(
   fondo = "pensamientosPreBatalla.jpeg",
-  nivelActual = pensamientoPreBatalla,
   siguienteNivel = segundaBatalla
 )
 
 
 const segundaBatalla = new Batalla(
   fondo = "escenario.jpeg",
-  nivelActual = nivel2,
   boss = juan,
   siguienteNivel = finalJuego
 )
