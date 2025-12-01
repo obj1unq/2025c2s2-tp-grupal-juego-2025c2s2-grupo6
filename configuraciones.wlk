@@ -15,7 +15,6 @@ object configurarJuego {
   method agregarPersonaje() {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
-      game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
       game.addVisual(barraProgreso)
       self.agregarVida()
     }

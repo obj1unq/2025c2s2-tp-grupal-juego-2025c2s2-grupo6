@@ -8,18 +8,15 @@ import patron.*
 import configuraciones.*
 
 class NivelLore{
-  const property nivelActual
-  var property siguienteNivel 
+  var   property siguienteNivel 
   const property fondo 
+  method puedeAvanzarPantalla() = true
   method agregarLille() {
     configurarJuego.agregarPersonaje()
     lille.reiniciarEstadisticas()
   }
   method cambiarEscenario(){
     escenario.image(fondo)
-  }
-  method siguienteNivel() {
-    return siguienteNivel
   }
   method clearLevel() {
     configurarJuego.quitarInterfaz()
@@ -36,6 +33,7 @@ class Nivel inherits NivelLore (fondo = "backgr.gif"){
   const property patronesDelNivel = #{}
   const property objetosDelNivel  
   const property dificultad
+  override method puedeAvanzarPantalla() = false
   override method agregarLille(){
     super()
     configurarJuego.agregarInterfaz()
@@ -118,11 +116,11 @@ class Nivel inherits NivelLore (fondo = "backgr.gif"){
 
 class Batalla inherits NivelLore{
   const boss 
+  override method puedeAvanzarPantalla() = false
   override method inicializar() {
     super()
     self.agregarLille()
     game.removeVisual(barraProgreso)
-    //game.addVisual(lille)
     game.addVisual(boss)
     game.schedule(3000, {boss.iniciarAtaque()})
     game.onCollideDo(boss, {objeto => objeto.chocarConEfecto(boss)})
@@ -132,35 +130,31 @@ class Batalla inherits NivelLore{
     boss.ocultar()
   }
 }
-object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusion.jpeg", siguienteNivel = portada){
-  override method inicializar(){
-    super()
-    game.removeVisual(lille)
-    game.removeVisual(marcadorDeVida)
-    game.stop()
-  }
+object finalJuego inherits NivelLore( fondo = "conclusion.jpeg", siguienteNivel = portada){
+  //override method inicializar(){
+    //super()
+    //game.removeVisual(lille)
+    //game.removeVisual(marcadorDeVida)
+    //game.stop()
+  //}
 }
 
 const pantallaDerrota = new NivelLore(
   fondo = "pantallaDerrota.gif",
-  nivelActual = pantallaDerrota,
-  siguienteNivel = fallToPieces.nivelActual()
+  siguienteNivel = tutorial
 )
 
 const portada = new NivelLore(
   fondo = "portada.gif",
-  nivelActual = portada,
   siguienteNivel = carta
 )
 
 const carta = new NivelLore(
   fondo = "cartaInicio.jpeg",
-  nivelActual = carta,
   siguienteNivel = tutorial
 )
 
 const tutorial = new Nivel(
-  nivelActual = 0,
   dificultad = dificultadBaja,
   objetosDelNivel = #{escudoMagico},
   setupDelNivel = #{ [p,r,r,_,_],
@@ -175,7 +169,6 @@ const tutorial = new Nivel(
 )
 
 const nivel1 = new Nivel(
-  nivelActual = 1,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -189,7 +182,6 @@ const nivel1 = new Nivel(
   siguienteNivel = nivel2
 )
 const nivel2 = new Nivel(
-  nivelActual = 2,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -207,7 +199,6 @@ const nivel2 = new Nivel(
   siguienteNivel = nivel3
 )
 const nivel3 = new Nivel(
-  nivelActual = 3,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -225,7 +216,7 @@ const nivel3 = new Nivel(
                      [p,p,_,_,p],
                      [_,p,_,p,l],
                      [_,p,p,p,_],
-                     [l,l,_,r,r],///
+                     [l,l,_,r,r],
                      [_,p,_,p,l],
                      [_,_,p,p,_],
                      [_,r,_,r,_],
@@ -241,7 +232,6 @@ const nivel3 = new Nivel(
 )
 
 const nivel4 = new Nivel(
-  nivelActual = 4,
   dificultad = dificultadMedia,
   objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
   setupDelNivel = #{ [p,l,l,_,_],
@@ -267,20 +257,17 @@ const nivel4 = new Nivel(
 
 const primerBatalla = new Batalla(
   fondo = "fondoBosque.jpeg",
-  nivelActual = primerBatalla,
   boss = wizard,
   siguienteNivel = pensamientoPreBatalla
 )
 const pensamientoPreBatalla = new NivelLore(
   fondo = "pensamientosPreBatalla.jpeg",
-  nivelActual = pensamientoPreBatalla,
   siguienteNivel = segundaBatalla
 )
 
 
 const segundaBatalla = new Batalla(
   fondo = "escenario.jpeg",
-  nivelActual = segundaBatalla,
   boss = juan,
   siguienteNivel = finalJuego
 )

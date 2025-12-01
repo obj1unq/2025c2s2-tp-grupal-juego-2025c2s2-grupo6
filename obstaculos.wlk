@@ -30,7 +30,6 @@ class Obstaculo{
   method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
       objeto.recibirDaño(self.dañoQueHace())
-      objeto.realizarAlMorir()
     }
     
   }

@@ -64,7 +64,7 @@ object pocion inherits Objeto(sonido = "pocion.mp3",image = "pocion.png" ){
     }
 }
 
-object escudoMagico inherits Objeto(sonido = "escudoActivado.mp3",image = "escudoMagicoo.png") {
+object escudoMagico inherits Objeto(sonido = "littleWin.mp3",image = "escudoMagicoo.png") {
     
     override method efectoDeChoque(objeto) {
       game.say(objeto, "Escudo Activado")

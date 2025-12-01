@@ -61,7 +61,7 @@ class Villano inherits Personaje(position = game.at(3,9)) {
   }
 }
 
-object wizard inherits Villano (hechizosMagicos = #{a},image = "wizardd.gif", vida = 200, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
+object wizard inherits Villano (hechizosMagicos = #{a},image = "wizardd.gif", vida = 100, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
 }
 object juan inherits Villano (hechizosMagicos = #{a,u},image = "juan.gif", vida = 100, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
 }
@@ -91,6 +91,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   override method recibirDaño(cantidad){
     if(!self.tieneEscudoActivo()){
       super(cantidad)
+      self.realizarAlMorir()
     }
     marcadorDeVida.marcarEstadisticaDe(self)
   }
@@ -118,7 +119,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }
   override method accionAlMorir() {
     self.imagenAlMorir()
-    game.schedule(1000, {fallToPieces.IrAPantallaDeMuerte()})
+    game.schedule(1000, {fallToPieces.irAPantallaDeMuerte()})
   }
   method izquierda() {
     if (!self.estoyMuerto()){
