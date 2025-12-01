@@ -62,7 +62,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   var property puntosObtenidos = 0
   method cambiarEstadoEscudo(bool) {
     tieneEscudoActivo = bool
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
   method puntosParaGanar() {
     return 200
@@ -73,14 +73,14 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   }else{
       vida = vida + 25 
   }
-  marcadorDeVida.marcarVidaDe(self)
+  marcadorDeVida.marcarEstadisticaDe(self)
   }
 
   override method recibirDaño(cantidad){
     if(!self.tieneEscudoActivo()){
       super(cantidad)
     }
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
 
   method parry() {
@@ -96,7 +96,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
       //game.stop()
     }else{
       puntosObtenidos += puntos
-      barraProgreso.marcarBarrita()
+      barraProgreso.marcarEstadisticaDe(self)
     }
   }
   /*
@@ -112,7 +112,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
   method reiniciarEstadisticas() {
     self.puntosObtenidos(0)
     self.vida(100)
-    marcadorDeVida.marcarVidaDe(self)
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
   override method accionAlMorir() {
   //  game.say(self,"GAME OVER")
@@ -139,63 +139,44 @@ class Marcador{
   var property image 
   method marcarEstadisticaDe(personaje){
     if(self.puntosARevisar() == 200){
-      image =  + "100.png"
-    } else if(self.puntosARevisar().between(175, 199)){
-      image = "progreso" + "90.png"
-    } else if(self.puntosARevisar().between(160, 174)){
-      image = "progreso"  + "80.png"
-    } else if(self.puntosARevisar().between(130, 159)){
-      image = "progreso" + "70.png"
-    } else if(self.puntosARevisar().between(100, 129)){
-      image = "progreso" + "60.png"
+      image = self.imagenTipoMarcador() + "100.png"
+    } else if(self.puntosARevisar().between(180, 199)){
+      image = self.imagenTipoMarcador()  + "90.png"
+    } else if(self.puntosARevisar().between(160, 179)){
+      image = self.imagenTipoMarcador()   + "80.png"
+    } else if(self.puntosARevisar().between(140, 159)){
+      image = self.imagenTipoMarcador()  + "70.png"
+    } else if(self.puntosARevisar().between(120, 139)){
+      image = self.imagenTipoMarcador()  + "60.png"
+    } else if(self.puntosARevisar().between(100, 119)){
+      image = self.imagenTipoMarcador()  + "50.png"
     } else if(self.puntosARevisar().between(80, 99)){
-      image = "progreso" + "50.png"
-    } else if(self.puntosARevisar().between(50, 79)){
-      image = "progreso" + "40.png"
-    } else if(self.puntosARevisar().between(30, 49)){
-      image = "progreso" + "30.png"
-    } else if(self.puntosARevisar().between(21, 29)){
-      image = "progreso" + "20.png"
-    } else if(self.puntosARevisar().between(1, 20)){
-      image = "progreso" + "10.png"
+      image = self.imagenTipoMarcador()  + "40.png"
+    } else if(self.puntosARevisar().between(60, 79)){
+      image = self.imagenTipoMarcador()  + "30.png"
+    } else if(self.puntosARevisar().between(40, 59)){
+      image = self.imagenTipoMarcador()  + "20.png"
+    } else if(self.puntosARevisar().between(20, 39)){
+      image = self.imagenTipoMarcador()  + "10.png"
     } else {
-      image = "progreso" + "0.png"
+      image = self.imagenTipoMarcador()  + "0.png"
     }
  }
-  method imagenTipoMarcador()
-  method puntosARevisar() {
-    return 
+  method imagenTipoMarcador(){
+    return ""
   }
-
+  method puntosARevisar() {
+    return
+}
 
 }
 
-
-
-object marcadorDeVida {
-  var property position = game.at(0, 9)
-  var property image = "vida 100.png"
-  
+object marcadorDeVida inherits Marcador(image = "vida 100.png") {
+  const property position = game.at(0, 9)
   method text() {
     return lille.vida().toString()
   }
   method textColor() = paleta.colorDeTexto()
-
-  method marcarVidaDe(personaje) {
-    if(personaje.vida() == 100){
-    image = "vida 100" + self.estadoEscudoDe(personaje) + ".png"
-  } else if(personaje.vida().between(80, 99)){
-    image = "vida 99 - 80" + self.estadoEscudoDe(personaje) + ".png"
-  } else if(personaje.vida().between(60, 79)){
-    image = "vida 79 - 60" + self.estadoEscudoDe(personaje) + ".png"
-  } else if(personaje.vida().between(30, 59)){
-    image = "vida 59 - 30" + self.estadoEscudoDe(personaje) + ".png"
-  } else if(personaje.vida().between(15, 29)){
-    image = "vida 15 - 0" + self.estadoEscudoDe(personaje) + ".png"
-  } else {
-    image = "vida 0" + self.estadoEscudoDe(personaje) + ".png"
-  }
-  }
 
   method estadoEscudoDe(personaje) {
     if(personaje.tieneEscudoActivo()){
@@ -204,44 +185,32 @@ object marcadorDeVida {
       return ""
     }
   }
+
+  override method imagenTipoMarcador() {
+    return "vida" + self.estadoEscudoDe(lille)
+  }
+
+  override method puntosARevisar(){
+    return lille.vida() * 2
+  }
+
+
 }
 
 
-class Barrita {
-  var property image
-  var property position = game.at(0, game.width() - 1)
+class Barrita inherits Marcador{
   method color()
-  method puntosARevisar()
-
-  method marcarBarrita() {
-      if(self.puntosARevisar() == 200){
-      image = "progreso" + self.color() + "100.png"
-    } else if(self.puntosARevisar().between(175, 199)){
-      image = "progreso" + self.color() + "90.png"
-    } else if(self.puntosARevisar().between(160, 174)){
-      image = "progreso" + self.color() + "80.png"
-    } else if(self.puntosARevisar().between(130, 159)){
-      image = "progreso" + self.color() + "70.png"
-    } else if(self.puntosARevisar().between(100, 129)){
-      image = "progreso" + self.color() + "60.png"
-    } else if(self.puntosARevisar().between(80, 99)){
-      image = "progreso" + self.color() + "50.png"
-    } else if(self.puntosARevisar().between(50, 79)){
-      image = "progreso" + self.color() + "40.png"
-    } else if(self.puntosARevisar().between(30, 49)){
-      image = "progreso" + self.color() + "30.png"
-    } else if(self.puntosARevisar().between(21, 29)){
-      image = "progreso" + self.color() + "20.png"
-    } else if(self.puntosARevisar().between(1, 20)){
-      image = "progreso" + self.color() + "10.png"
-    } else {
-      image = "progreso" + self.color() + "0.png"
-    }
+  override method puntosARevisar(){
+    return lille.puntosObtenidos()
+  }
+  override method imagenTipoMarcador() {
+    return "progreso" + self.color()
   }
 
 }
 
 object barraProgreso inherits Barrita(image = "progreso" + self.color() + "0.png") {
+  const property position = game.at(7, 1)
    override method puntosARevisar() = lille.puntosObtenidos()
    override method color() {
     return "amarillo"

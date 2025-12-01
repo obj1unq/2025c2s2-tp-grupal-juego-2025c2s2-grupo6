@@ -104,6 +104,7 @@ class Batalla inherits NivelLore(){
   override method inicializar() {
     super()
     self.añadirPersonaje()
+    game.removeVisual(barraProgreso)
     //game.addVisual(lille)
     game.addVisual(boss)
     game.schedule(3000, {boss.iniciarAtaque()})
