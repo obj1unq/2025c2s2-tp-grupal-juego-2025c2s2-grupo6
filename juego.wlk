@@ -17,7 +17,7 @@ object fallToPieces{
       nivelActual = pantallaDerrota 
       lille.reiniciarEstadisticas()
       //configurarJuego.quitarInterfaz()
-      pantallaDerrota.inicializar()
+      nivelActual.inicializar()
     }
     method inicializar() {          //metodo que inicializa el nivel actual del juego.
         const musicaPrincipal = game.sound("elcaminoDelMago.mp3")

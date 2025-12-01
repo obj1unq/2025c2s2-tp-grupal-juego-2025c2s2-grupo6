@@ -49,7 +49,7 @@ class Objeto {
 class ObjetosConPuntos inherits Objeto {
   const puntosQueDa = 0
   override method efectoDeChoque(objeto) {
-      game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+puntosQueDa)
+      game.say(objeto, "Ahora tengo:" + (objeto.puntosObtenidos()+puntosQueDa).toString())
         objeto.obtenerPuntos(puntosQueDa)
     }
 }

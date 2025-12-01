@@ -80,12 +80,12 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
     return 200
   }
   method curar() {
-  if (vida >= 75){
-      vida = 100
-  }else{
-      vida = vida + 25 
-  }
-  marcadorDeVida.marcarEstadisticaDe(self)
+    if (vida >= 75){
+        vida = 100
+    }else{
+        vida = vida + 25 
+    }
+    marcadorDeVida.marcarEstadisticaDe(self)
   }
 
   override method recibirDaño(cantidad){
@@ -172,7 +172,10 @@ class Marcador{
 
 object marcadorDeVida inherits Marcador(image = "vida 100.png") {
   const property position = game.at(0, 9)
-
+  method text() {
+    return lille.vida().toString()
+  }
+  method textColor() = paleta.colorDeTexto()
   method estadoEscudoDe(personaje) {
     if(personaje.tieneEscudoActivo()){
       return " escudo"
@@ -203,7 +206,7 @@ class Barrita inherits Marcador{
 }
 
 object barraProgreso inherits Barrita(image = "progreso" + self.color() + "0.png") {
-  const property position = game.at(7, 1)
+  const property position = game.at(6, 0)
    override method puntosARevisar() = lille.puntosObtenidos()
    override method color() {
     return "amarillo"

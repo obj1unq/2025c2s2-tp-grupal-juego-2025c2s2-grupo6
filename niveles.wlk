@@ -143,7 +143,7 @@ object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusi
 
 const pantallaDerrota = new NivelLore(
   fondo = "pantallaDerrota.gif",
-  nivelActual = pensamientoPreBatalla,
+  nivelActual = pantallaDerrota,
   siguienteNivel = fallToPieces.nivelActual()
 )
 
@@ -280,7 +280,7 @@ const pensamientoPreBatalla = new NivelLore(
 
 const segundaBatalla = new Batalla(
   fondo = "escenario.jpeg",
-  nivelActual = nivel2,
+  nivelActual = segundaBatalla,
   boss = juan,
   siguienteNivel = finalJuego
 )
