@@ -2,12 +2,22 @@ import addons.*
 import configuraciones.*
 import wollok.game.*
 import niveles.*
+import personajes.lille
+
 object fallToPieces{
     var property nivelActual = portada
     method irASiguienteNivel() {
       nivelActual.clearLevel()
       nivelActual = nivelActual.siguienteNivel()
       nivelActual.inicializar()
+    }
+    method IrAPantallaDeMuerte() {
+      nivelActual.clearLevel()
+      pantallaDerrota.siguienteNivel(nivelActual)
+      nivelActual = pantallaDerrota 
+      lille.reiniciarEstadisticas()
+      //configurarJuego.quitarInterfaz()
+      pantallaDerrota.inicializar()
     }
     method inicializar() {          //metodo que inicializa el nivel actual del juego.
         const musicaPrincipal = game.sound("elcaminoDelMago.mp3")
@@ -18,14 +28,11 @@ object fallToPieces{
         game.title("fall to pieces")
         musicaPrincipal.shouldLoop(true)
         game.schedule(500, { musicaPrincipal.play()} )
-        musicaPrincipal.volume(0.5)
+        musicaPrincipal.volume(0.3)
         nivelActual.inicializar()
         configurarJuego.tecladoEnJuego()
+        game.onCollideDo(lille, {objeto => if(!lille.estoyMuerto() || lille.puntosObtenidos() == lille.puntosParaGanar()) {objeto.chocarConEfecto(lille)}})
         //objeto configurarControles
-    }
-    method volverACargarNivel() { //sin uso por ahora
-      nivelActual.clearLevel()
-      nivelActual.inicializar()
     }
 
     method irASiguienteNivelJugador(){
@@ -33,22 +40,4 @@ object fallToPieces{
           self.irASiguienteNivel()
       }  
     }
-}
-
-
-
-
-
-class Pantalla { //sacar sin uso
-  const property position = game.at(0, 0)
-  const property image
-  method volverAlIncio() {
-    fallToPieces.nivelActual(tutorial)
-  }
-  method empezarJuego() {
-    
-  }
-  method reintentarNivel() {
-    fallToPieces.nivelActual().volverACargarNivel()
-  }
 }

@@ -4,8 +4,9 @@ import personajes.*
 import addons.posicion
 
 
-class Objeto {//mover a addons  
-  var property position = posicion.randomizarEnFila(10)
+class Objeto {
+  var   property position = posicion.randomizarEnFila(10)
+  const property image 
   const clave = self.identity()
   const sonido
   var property tiempoDeCaida = 400
@@ -13,7 +14,7 @@ class Objeto {//mover a addons
     game.sound(sonido).play()
   }
   method invocar() {
-    if (game.getObjectsIn(position).isEmpty()){
+    if (game.getObjectsIn(position).isEmpty() && !game.hasVisual(self)){
       game.addVisual(self)
       self.caida()
     }
@@ -45,18 +46,25 @@ class Objeto {//mover a addons
   method efectoDeChoque(objeto) {}
 }
 
-object pocion inherits Objeto(sonido = "pocion.mp3"){
-    //Prop: objeto que recupera la vida del personaje en 25 puntos de vida 
-    const property image  = "pocion.png" 
+class ObjetosConPuntos inherits Objeto {
+  const puntosQueDa = 0
+  override method efectoDeChoque(objeto) {
+      game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+puntosQueDa)
+        objeto.obtenerPuntos(puntosQueDa)
+    }
+}
 
+
+
+object pocion inherits Objeto(sonido = "pocion.mp3",image = "pocion.png" ){
+    //Prop: objeto que recupera la vida del personaje en 25 puntos de vida 
     override method efectoDeChoque(objeto) {
       game.say(objeto, "" + lille.vida() + " HP")
       lille.curar()
     }
 }
 
-object escudoMagico inherits Objeto(sonido = "escudoActivado.mp3") {
-    var property image    =  "escudoMagicoo.png"
+object escudoMagico inherits Objeto(sonido = "escudoActivado.mp3",image = "escudoMagicoo.png") {
     
     override method efectoDeChoque(objeto) {
       game.say(objeto, "Escudo Activado")
@@ -67,20 +75,10 @@ object escudoMagico inherits Objeto(sonido = "escudoActivado.mp3") {
     }
 }
 
-object diamanteValioso inherits Objeto(sonido = "bigWin.mp3"){
-    var property image    = "diamanteValioso.png"
+object diamanteValioso inherits ObjetosConPuntos(sonido = "bigWin.mp3", puntosQueDa = 20, image = "diamanteValioso.png"){
 
-    override method efectoDeChoque(objeto) {
-      game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+200)
-        objeto.obtenerPuntos(20)
-    }
 }
 
-object piedraPreciosa inherits Objeto(sonido = "littleWin.mp3") {
-    var property image    = "piedraPreciosa.png"
+object piedraPreciosa inherits ObjetosConPuntos(sonido = "littleWin.mp3", puntosQueDa = 10, image = "piedraPreciosa.png") {
 
-    override method efectoDeChoque(objeto) {
-      game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+100)
-        objeto.obtenerPuntos(10)
-    }
 }
