@@ -1,0 +1,117 @@
+import objetos.*
+import addons.*
+import juego.*
+import patron.*
+import wollok.game.*
+import personajes.*
+import obstaculos.*
+import configuraciones.*
+import niveles.*
+
+describe "Fall to Pieces" {
+    const ascuas = new Ascuas(position = game.at(2,4))
+
+    method initialize(){
+        game.addVisual(lille)
+        game.addVisual(ascuas)
+        lille.position(game.at(2,3))
+        ascuas.position(lille.position().up(1))
+    }
+
+    method initializeObjetos(){
+        configurarJuego.agregarPersonaje()
+        game.addVisual(pocion)
+        game.addVisual(escudoMagico)
+        game.addVisual(diamanteValioso)
+        game.addVisual(piedraPreciosa)
+    }
+
+    test "Personaje colisiona con ascuas" {
+        assert.that(game.hasVisual(lille))
+        assert.that(game.hasVisual(ascuas))
+        assert.equals(100, lille.vida())
+        ascuas.caer()
+        assert.equals(lille.position(), ascuas.position())
+        ascuas.chocarConEfecto(lille)
+        assert.equals(40, ascuas.dañoQueHace())
+        assert.equals(60, lille.vida())
+    }
+
+    test "posicion de Personaje"{
+        lille.derecha()
+        assert.equals(game.at(3,3), lille.position())
+        lille.izquierda()
+        assert.equals(game.at(2,3), lille.position())
+    }
+
+    test "ir a siguiente nivel"{
+        assert.equals(fallToPieces.nivelActual(), portada)
+        fallToPieces.irASiguienteNivelJugador()
+        assert.equals(fallToPieces.nivelActual(), carta)
+        fallToPieces.irASiguienteNivelJugador()
+        assert.equals(fallToPieces.nivelActual(), tutorial)
+        fallToPieces.irASiguienteNivelJugador()
+        assert.equals(fallToPieces.nivelActual(), tutorial)//no se actualiza debido a que es un nivel jugable
+        fallToPieces.irASiguienteNivel()
+        assert.equals(fallToPieces.nivelActual(), nivel1)
+    }
+
+    test "agregar y quitar"{
+        configurarJuego.quitarPersonaje()
+        assert.notThat(game.hasVisual(lille))
+
+        configurarJuego.agregarPersonaje() 
+        assert.that(game.hasVisual(lille))
+
+        configurarJuego.agregarPuntos() 
+        assert.that(game.hasVisual(puntos))
+
+        configurarJuego.quitarPuntos()
+        assert.notThat(game.hasVisual(puntos))
+
+        configurarJuego.agregarTimer() 
+        assert.that(game.hasVisual(timer))
+        
+        configurarJuego.quitarTimer() 
+        assert.notThat(game.hasVisual(timer))
+
+        configurarJuego.agregarVida()
+        assert.that(game.hasVisual(marcadorDeVida))
+        configurarJuego.quitarVida()
+        assert.notThat(game.hasVisual(timer))        
+    }
+
+
+    test "prueba muerte"{
+        lille.accionAlMorir()
+        assert.equals(0, lille.puntosObtenidos())
+        assert.notThat(game.hasVisual(puntos))
+        assert.notThat(game.hasVisual(timer))
+        //assert.notThat(game.hasVisual(lille))
+        assert.notThat(game.hasVisual(timer))        
+
+    }
+
+    test "objetos"{
+        assert.equals(100, lille.vida())
+        ascuas.chocarConEfecto(lille)
+
+        assert.equals(60, lille.vida())
+        pocion.chocarConEfecto(lille)
+        assert.equals(85, lille.vida())
+
+        escudoMagico.chocarConEfecto(lille)
+        assert.that(lille.tieneEscudoActivo())
+
+        ascuas.chocarConEfecto(lille)
+        assert.equals(85, lille.vida())
+
+        diamanteValioso.chocarConEfecto(lille)
+        assert.equals(20, lille.puntosObtenidos())
+        piedraPreciosa.chocarConEfecto(lille)
+        assert.equals(30, lille.puntosObtenidos())
+    }
+}
+
+
+

@@ -42,6 +42,8 @@ object paleta{
 object timer {
   const property position = game.at(3,9)
   var tiempo = 0
+
+
   method startTimer(){
     game.addVisual(self)
     self.empezarAContar()
@@ -49,13 +51,14 @@ object timer {
   method text() = tiempo.toString() + "s"
   method textColor() = paleta.colorDeTexto()
   method empezarAContar(){
-    game.onTick(1000, "tiempo", {self.sumarATimer(1)})
+      game.onTick(1000, "tiempo", {self.sumarATimer(1)})
   }
   method sumarATimer(segundos) {
     tiempo += segundos
   }
   method quitarTimer() {
     game.removeVisual(self)
+    game.removeTickEvent("tiempo")
     tiempo = 0
   }
   method chocarConEfecto(objeto){}

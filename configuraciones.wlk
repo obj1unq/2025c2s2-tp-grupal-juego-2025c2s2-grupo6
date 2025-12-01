@@ -16,8 +16,8 @@ object configurarJuego {
     if (!game.hasVisual(lille)){
       game.addVisual(lille)
       game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
-      game.addVisual(marcadorDeVida)
       game.addVisual(barraProgreso)
+      self.agregarVida()
     }
   }
   method agregarPuntos() {
@@ -26,7 +26,10 @@ object configurarJuego {
     }
   }
   method quitarPersonaje() {
+    if (game.hasVisual(lille)){
       game.removeVisual(lille)
+      self.quitarVida()
+    }
   }
 
   method agregarTimer() {
@@ -36,7 +39,7 @@ object configurarJuego {
   }
   method quitarTimer() {
     if (game.hasVisual(timer)){
-      game.removeVisual(timer)
+      timer.quitarTimer()
     }
   }
   method quitarPuntos() {
@@ -44,21 +47,27 @@ object configurarJuego {
       game.removeVisual(puntos)
     }
   }
-
   method quitarProgreso() {
     if (game.hasVisual(barraProgreso)){
       game.removeVisual(barraProgreso)
     }
   }
-
   method quitarVida(){
     if (game.hasVisual(marcadorDeVida)){
       game.removeVisual(marcadorDeVida)
     }
   }
+
+  method agregarVida() {
+    if(!game.hasVisual(marcadorDeVida)){
+      game.addVisual(marcadorDeVida)
+    }
+  }
+  method agregarInterfaz(){
+    self.agregarPuntos()
+    self.agregarTimer()
+  }
   method quitarInterfaz() {
-    self.quitarPersonaje()
-    self.quitarVida()
     self.quitarPuntos()
     self.quitarTimer()
     self.quitarProgreso()
@@ -91,7 +100,7 @@ object dificultadMedia inherits Dificultad{
 
 object dificultadAlta inherits Dificultad{
   override method tiempoDeAparicion() {
-    return 300 //500
+    return 400 //500
   }
   override method tiempoDeCaida() {
     return 100
@@ -105,4 +114,5 @@ object dificultadExtreme inherits Dificultad{
   override method tiempoDeCaida() {
     return 100
   }
+
 }

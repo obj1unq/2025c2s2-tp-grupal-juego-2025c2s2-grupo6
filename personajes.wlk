@@ -43,23 +43,35 @@ class Villano inherits Personaje(position = game.at(3,9)) {
     position = game.at(tableroJugable.minPosition().randomUpTo(game.width()-1).truncate(0),position.y())
   }
   method crearAtaque() {
-    return hechizosMagicos.anyOne().crear(position.down(1))
+    const ataque = hechizosMagicos.anyOne().crear(position.down(1))
+    return ataque
+  }
+  method ocultarAtaques(){
+    tiposDeAtaques.forEach({ataque => ataque.detenerAtaque()})
+  }
+  method ocultar() {
+    game.removeTickEvent(claveDeAtaque)
+    self.ocultarAtaques()
+    game.removeVisual(self)
   }
   override method accionAlMorir(){ // el ataque del villano no se va.
     game.say(self,"GAME OVER")
-    game.removeTickEvent(claveDeAtaque)
-    game.schedule(2000, {game.removeVisual(self) fallToPieces.irASiguienteNivel()})
-    //game.removeTickEvent("moveRand")
+    self.ocultar()
+    game.schedule(2000, {fallToPieces.irASiguienteNivel()})
   }
 }
 
-object wizardd inherits Villano (hechizosMagicos = #{a,u},image = "wizardd.gif", vida = 100, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
+object wizard inherits Villano (hechizosMagicos = #{a},image = "wizardd.gif", vida = 200, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
 }
-object juan inherits Villano (hechizosMagicos = #{a,u},image = "wizardd.gif", vida = 100, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
+object juan inherits Villano (hechizosMagicos = #{a,u},image = "juan.gif", vida = 100, tiposDeAtaques = #{ataqueNormal,ataqueLluvia}) {
 }
 
 object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vida = 100){
   var property puntosObtenidos = 0
+  method imagenAlMorir(){
+    self.image("pjdead.png")
+    game.schedule(1200, { self.image("gifg.gif") })
+  }
   method cambiarEstadoEscudo(bool) {
     tieneEscudoActivo = bool
     marcadorDeVida.marcarEstadisticaDe(self)
@@ -99,40 +111,27 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
       barraProgreso.marcarEstadisticaDe(self)
     }
   }
-  /*
-  override method accionAlMorir() {
-    game.say(self,"GAME OVER")
-    self.vida(100)
-    marcadorDeVida.marcarVidaDe(self)
-    //fallToPieces.ponerPantallaDeMuerte()
-    //fallToPieces.nivelActual().clearLevel()
-    //game.stop()
-  }
-  */
   method reiniciarEstadisticas() {
     self.puntosObtenidos(0)
     self.vida(100)
     marcadorDeVida.marcarEstadisticaDe(self)
   }
   override method accionAlMorir() {
-  //  game.say(self,"GAME OVER")
-    fallToPieces.nivelActual().clearLevel()
-    pantallaDerrota.siguienteNivel(fallToPieces.nivelActual())
-    configurarJuego.quitarInterfaz()
-    self.reiniciarEstadisticas()
-    fallToPieces.nivelActual(pantallaDerrota)
-    pantallaDerrota.inicializar()
-  //  game.stop()
+    self.imagenAlMorir()
+    game.schedule(1000, {fallToPieces.IrAPantallaDeMuerte()})
   }
   method izquierda() {
-	position = game.at(1.max(position.x() - 1), position.y()) 
+    if (!self.estoyMuerto()){
+	    position = game.at(1.max(position.x() - 1), position.y()) 
+    }
   }
 	
   method derecha() {
-	position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
+    if (!self.estoyMuerto()){
+  	  position = game.at((game.width() - 2).min(position.x() + 1), position.y()) 
+    }
   }
 }
-
 
 class Marcador{
 
@@ -167,16 +166,12 @@ class Marcador{
   }
   method puntosARevisar() {
     return
-}
+  }
 
 }
 
 object marcadorDeVida inherits Marcador(image = "vida 100.png") {
   const property position = game.at(0, 9)
-  method text() {
-    return lille.vida().toString()
-  }
-  method textColor() = paleta.colorDeTexto()
 
   method estadoEscudoDe(personaje) {
     if(personaje.tieneEscudoActivo()){
@@ -193,8 +188,6 @@ object marcadorDeVida inherits Marcador(image = "vida 100.png") {
   override method puntosARevisar(){
     return lille.vida() * 2
   }
-
-
 }
 
 
@@ -218,35 +211,34 @@ object barraProgreso inherits Barrita(image = "progreso" + self.color() + "0.png
 }
 
 
-object barraVidaEnemigo inherits Barrita(image = "progreso" + self.color() + "0.png") {
-   override method puntosARevisar() = wizardd.vida()
-   override method color() {
-    return "rojo"
-  }
-}
-
 class Ataque {
+  const property hechizosUsados = #{}
   method atacar(personajeAtacante) {
     if (game.getObjectsIn(personajeAtacante.position().down(1)).isEmpty()){
       self.invocarAtaque(personajeAtacante)
     }
   }
-  method detenerAtaque(personajeAtacante) {
-    
+  method detenerAtaque() {
+    hechizosUsados.forEach({hechizo => hechizo.ocultar()})
+    hechizosUsados.clear()
   }
-  method invocarAtaque(personaje){}
+  method invocarAtaque(personaje){
+
+  }
+  method agregarAAtaques(hechizo){
+    hechizosUsados.add(hechizo)
+  }
   method ataqueNormal(personaje) {
-    const ataque = personaje.crearAtaque()
-    game.addVisual(ataque)
-    ataque.caida()
+    const hechizo  = personaje.crearAtaque()
+    game.addVisual(hechizo)
+    hechizo.caida()
+    self.agregarAAtaques(hechizo)
   }
 }
 
-
 object ataqueNormal inherits Ataque{
-  override method invocarAtaque(personaje) {
+  override method invocarAtaque(personaje){
     self.ataqueNormal(personaje)
-    //self.direccionarAtaque(ataque)
   }
 }
 object ataqueExpansivo inherits Ataque{
@@ -254,14 +246,14 @@ object ataqueExpansivo inherits Ataque{
 }
 
 object ataqueLluvia inherits Ataque{
-  override method invocarAtaque(personaje) {
+  override method invocarAtaque(personaje) {                          
     self.atacarEnPosicion(personaje, tableroJugable.minPosition())
   }
   method atacarEnPosicion(personaje, columna) {
     personaje.position(game.at(columna, personaje.position().y()))
     self.ataqueNormal(personaje) 
     const siguienteColumna = columna + 1
-    if (siguienteColumna < game.width() - 1){ // Usamos < para no exceder los límites
+    if (siguienteColumna < game.width() - 1 && personaje.vida() > 0){ 
       game.schedule(500, { self.atacarEnPosicion(personaje, siguienteColumna) })
     } else {
       personaje.cambiarPosicion()

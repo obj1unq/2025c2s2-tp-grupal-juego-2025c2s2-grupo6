@@ -4,7 +4,7 @@ import addons.*
 
 class Obstaculo{
   var property position
-  var property image = self.imagenSinColisionar()
+  var property image
   const clave = self.identity()
 
   method caida() {
@@ -20,7 +20,6 @@ class Obstaculo{
     position = game.at(position.x(), 10)
     game.removeVisual(self)
     game.removeTickEvent(clave)
-    self.image(self.imagenSinColisionar())
   }
   method chocarConEfecto(objeto) {
       //Prop: realizar un efecto sobre el objeto colisionado
@@ -31,23 +30,17 @@ class Obstaculo{
   method efectoEn(objeto) {
     if (not objeto.tieneEscudoActivo()){
       objeto.recibirDaño(self.dañoQueHace())
-      self.image(self.imagenTrasColisionar())
       objeto.realizarAlMorir()
     }
     
   }
   method dañoQueHace() = 20 
-  method imagenSinColisionar()
-  method imagenTrasColisionar()
 }
 class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
 
     method play(){
-    game.sound("ascuas.mp3").play()
+      game.sound("ascuas.mp3").play()
     }
-    override method imagenSinColisionar() = image
-    override method imagenTrasColisionar() = image 
-
     method imagenTrasParry() {
       return "ascuassss.gif"
     }
@@ -84,43 +77,35 @@ class Ascuas inherits Obstaculo(image = "ascuas1.gif"){
 }
 
 class PurpleBall inherits Ascuas(image = "purpleball1.gif"){
-  override method imagenSinColisionar() = image
-  override method imagenTrasColisionar() = image 
   override method imagenTrasParry() {
     return "idk3.gif"
   }
 }
 
-class CajaNegra inherits Obstaculo(image = "aaa.png"){
-  override method imagenSinColisionar() = image
-  override method imagenTrasColisionar() = image
-}
-
 class Lava inherits Obstaculo(image = "lava1.png"){
-  override method imagenSinColisionar() = image
-  override method imagenTrasColisionar() = image
 }
 
-class Pared inherits Obstaculo(){
-  override method imagenSinColisionar() {
-    return "arborr.png"
-  }
-  override method imagenTrasColisionar(){
-    return "pared-rota1.png"
-  }
+class Arbol inherits Obstaculo(image = "arborr.png"){
+  override method dañoQueHace() = 20
+}
+class Pared inherits Obstaculo(image = "pared.png"){
+  override method dañoQueHace() = 10
 }
 class Vacio inherits Obstaculo(image = "vacio.png"){
-  override method imagenSinColisionar() = image
-  override method imagenTrasColisionar() = image
-  override method chocarConEfecto(p) {
-     
-  }
+  override method chocarConEfecto(p) {}
 }
 
 
 object p {
   method crear(position) {
     const obj = new Pared(position = position) 
+    return obj
+  }
+}
+
+object r {
+  method crear(position) {
+    const obj = new Arbol(position = position) 
     return obj
   }
 }
@@ -132,13 +117,6 @@ object l {
   }
 }
 
-object c {
-    
-  method crear(position) {
-    const obj = new CajaNegra(position = position) 
-    return obj
-  }
-}
 object a {
     
   method crear(position) {
