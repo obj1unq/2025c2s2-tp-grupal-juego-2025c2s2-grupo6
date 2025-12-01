@@ -64,8 +64,3 @@ object timer {
   method chocarConEfecto(objeto){}
 }
 
-
-object movimiento {
-  var property puedeMover = false
-
-}
