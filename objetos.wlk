@@ -1,141 +1,84 @@
 import wollok.game.*
-import personaje.*
-import tableroJugable.*
+import juego.fallToPieces
+import personajes.*
+import addons.posicion
 
-object pocion {
-//Prop: objeto que recupera la vida del lille en 25 puntos de vida 
-    var property position = game.at(4,10)
-    var property image    = "pocion.png"
-    
-    method play(){
-    game.sound("pocion.mp3").play()
-    }
 
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-        game.removeVisual(self)
-        game.schedule(2000, {game.addVisual(self)})
-        self.play()
-        game.say(objeto, "" + lille.vida() + " HP")
-        if (lille.vida() >= 75){
-            lille.vida(100)
-        } else{
-            lille.vida(lille.vida() + 25)
-        }
-        marcadorDeVida.marcarVidaDe(objeto)
+class Objeto {
+  var   property position = posicion.randomizarEnFila(10)
+  const property image 
+  const clave = self.identity()
+  const sonido
+  var property tiempoDeCaida = 400
+  method play(){
+    game.sound(sonido).play()
+  }
+  method invocar() {
+    if (game.getObjectsIn(position).isEmpty() && !game.hasVisual(self)){
+      game.addVisual(self)
+      self.caida()
     }
-
-    method caida() {
-        game.onTick(400, "ob29", {self.caer()})
+    else{
+      position = posicion.randomizarEnFila(10)
     }
-    method caer() {
-      if (position.y() != 0){
-          position = game.at(position.x(), position.y()-1)
-      }else{
-          position = game.at(tableroJugable.x().randomUpTo(game.width()-1).truncate(0), 10)
-      }
-    }
-}
-
-object escudoMagico {
-    //Prop: Otorgar un escudo temporal 
-    var property position = game.at(3,10)
-    var property image    =  "escudoMagico.png"
-    
-    method play(){
-    game.sound("escudoActivado.mp3").play()
-    }
-
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-        game.removeVisual(self)
-        game.schedule(5000, {game.addVisual(self)})
-        self.play()
-        game.say(objeto, "Escudo Activado")
-        objeto.tieneEscudoActivo(true)
-        marcadorDeVida.marcarVidaDe(objeto)
-        game.schedule(10000, {   game.say(objeto, "Ya no soy invencible :(")
-                                objeto.tieneEscudoActivo(false)
-                                marcadorDeVida.marcarVidaDe(objeto) })
-    }
-    
-    method caida() {
-      game.onTick(400, "ob35", {self.caer()})
-    }
-    method caer() {
-      //Prop: realizar el efecto gravitatorio en el objeto dado
-        if (position.y() != 0){
-        position = game.at(position.x(), position.y()-1)
-        }else{
-        position = game.at(position.x(), 10)
-        }
-    }
-    
-}
-
-object piedraPreciosa{
-    //Prop: aumentar la puntuación en 100 pts 
-    var property position = game.at(1,10)
-    var property image    = "piedraPreciosa.png"
-
-    method play(){
-    game.sound("littleWin.mp3").play()
-    }
-
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
+  }
+  method chocarConEfecto(objeto) {
     game.removeVisual(self)
-    game.schedule(7000, {game.addVisual(self)})
     self.play()
-    objeto.puntosObtenidos(objeto.puntosObtenidos() + 100)
-    game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos())
-    objeto.detenerJuegoSiGane()
-    marcadorDeVida.marcarVidaDe(objeto)
-    }
-
-    method caida() {
-      game.onTick(400, "ob34", {self.caer()})
-    }
-
-    method caer() {
-      //Prop: realizar el efecto gravitatorio en el objeto dado
-        if (position.y() != 0){
+    self.efectoDeChoque(objeto)
+  }
+  method caida() {
+      game.onTick(tiempoDeCaida, clave, {self.caer()})
+  }
+  method ocultar() {
+    game.removeVisual(self)
+    game.removeTickEvent(clave) 
+  }
+  method caer() {
+    //Prop: realizar el efecto gravitatorio en el objeto dado
+      if (position.y() != 0){
         position = game.at(position.x(), position.y()-1)
-        }else{
-        position = game.at(position.x(), 10)
-        }
-    }
-    
+      }else{
+        self.ocultar()
+        position = posicion.randomizarEnFila(10)
+      }
+  }
+  method efectoDeChoque(objeto) {}
 }
 
-object diamanteValioso {
-    //Prop: aumentar la puntuacion en 200 pts 
-    var property position = game.at(6,10)
-    var property image    = "diamanteValioso.png"
+class ObjetosConPuntos inherits Objeto {
+  const puntosQueDa = 0
+  override method efectoDeChoque(objeto) {
+      game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos()+puntosQueDa)
+        objeto.obtenerPuntos(puntosQueDa)
+    }
+}
 
-    method play(){
-      game.sound("bigWin.mp3").play()
-    }
 
-    method chocarConEfecto(objeto) {
-      //Prop: realizar un efecto sobre el objeto colisionado
-    self.play()
-    objeto.puntosObtenidos(objeto.puntosObtenidos() + 200)
-    game.say(objeto, "Ahora tengo:" + objeto.puntosObtenidos())
-    objeto.detenerJuegoSiGane()
-    marcadorDeVida.marcarVidaDe(objeto)
+
+object pocion inherits Objeto(sonido = "pocion.mp3",image = "pocion.png" ){
+    //Prop: objeto que recupera la vida del personaje en 25 puntos de vida 
+    override method efectoDeChoque(objeto) {
+      game.say(objeto, "" + lille.vida() + " HP")
+      lille.curar()
     }
-    method caida() {
-      game.onTick(400, "ob30", {self.caer()})
-    }
-    method caer() {
-      //Prop: realizar el efecto gravitatorio en el objeto dado
-        if (position.y() != 0){
-        position = game.at(position.x(), position.y()-1)
-        }else{
-        position = game.at(position.x(), 10)
-        }
-    }
+}
+
+object escudoMagico inherits Objeto(sonido = "escudoActivado.mp3",image = "escudoMagicoo.png") {
     
+    override method efectoDeChoque(objeto) {
+      game.say(objeto, "Escudo Activado")
+      objeto.cambiarEstadoEscudo(true)
+      game.schedule(10000, {   game.say(objeto, "Ya no soy invencible :(")
+                                objeto.cambiarEstadoEscudo(false)
+                                })
+    }
+}
+
+object diamanteValioso inherits ObjetosConPuntos(sonido = "bigWin.mp3", puntosQueDa = 20, image = "diamanteValioso.png"){
+
+}
+
+object piedraPreciosa inherits ObjetosConPuntos(sonido = "littleWin.mp3", puntosQueDa = 10, image = "piedraPreciosa.png") {
 
 }

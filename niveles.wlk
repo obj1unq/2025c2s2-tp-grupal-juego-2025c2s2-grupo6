@@ -1,66 +1,56 @@
-import personaje.*
+import personajes.*
+import juego.fallToPieces
 import wollok.game.*
-import obstaculosConClases.*
-import objetosConClases.*
-import tableroJugable.*
+import obstaculos.*
+import objetos.*
+import addons.*
 import patron.*
 import configuraciones.*
 
-class Dificultad {
-  
-  method tiempoDeAparicion() 
-  method tiempoDeCaida()
-}
-
-object dificultadBaja {
-  method tiempoDeAparicion() {
-    return 800
-  }
-  method tiempoDeCaida() {
-    return 200
-  }
-}
-
-object dificultadMedia {
-  method tiempoDeAparicion() {
-    return 800
-  }
-  method tiempoDeCaida() {
-    return 100
-  }
-}
-
-object dificultadAlta {
-  method tiempoDeAparicion() {
-    return 500
-  }
-  method tiempoDeCaida() {
-    return 100
-  }
-}
-
-
-
-class Nivel {
+class NivelLore{
   const property nivelActual
-  const property siguienteNivel 
-  const property setupDelNivel
-  const property patronesDelNivel = #{}
-  var property objetosDelNivel  
-  const property dificultad
-  
-  method clearLevel() {
-    setupDelNivel.clear()
-    self.ocultarPatrones()
-    patronesDelNivel.clear()
-    game.removeTickEvent("puntosPorSegundo")
-    game.removeTickEvent("mostrarNuevoPatron")
-    //configurarJuego.quitarPersonaje()
+  var property siguienteNivel 
+  const property fondo 
+  method agregarLille() {
+    configurarJuego.agregarPersonaje()
+    lille.reiniciarEstadisticas()
+  }
+  method cambiarEscenario(){
+    escenario.image(fondo)
   }
   method siguienteNivel() {
     return siguienteNivel
   }
+  method clearLevel() {
+    configurarJuego.quitarInterfaz()
+    configurarJuego.quitarPersonaje()
+  }
+
+  method inicializar() {        //inicializador del nivel.
+    self.cambiarEscenario()
+  }
+}
+
+class Nivel inherits NivelLore (fondo = "backgr.gif"){
+  const property setupDelNivel
+  const property patronesDelNivel = #{}
+  const property objetosDelNivel  
+  const property dificultad
+  override method agregarLille(){
+    super()
+    configurarJuego.agregarInterfaz()
+  }
+  override method clearLevel() {
+    super()
+    self.ocultarPatrones()
+    self.ocultarObjetos()
+    game.removeTickEvent("mostrarPatronNuevo")
+    game.removeTickEvent("puntosPorSegundo")
+    game.removeTickEvent("agregarObjeto")
+    patronesDelNivel.clear()
+  }
   method comenzarACaer() {
+    //llamo a un patron distinto cada tiempo de dificultad segundos
     if (!patronesDelNivel.isEmpty()){
       game.onTick(dificultad.tiempoDeAparicion(), "mostrarPatronNuevo", {self.mostrarNuevoPatron()})
     }
@@ -68,10 +58,12 @@ class Nivel {
   method startSetup() {
     //construyo los patrones
     setupDelNivel.forEach({setup => self.crearPatron(setup)})
-    //llamo a un patron distinto cada 3 segundos
   }
   method ocultarPatrones() {
-    patronesDelNivel.forEach({patron => patron.ocultarVisuales()})
+    patronesDelNivel.forEach({patron => patron.ocultarVisuales() patron.borrarVisuales()}) 
+  }
+  method ocultarObjetos() {
+    objetosDelNivel.forEach({obj => obj.ocultar()}) 
   }
   method crearPatron(setup) {
     const pat = patronFactory.crear() 
@@ -85,172 +77,209 @@ class Nivel {
     }
   }
   method llamarPatron() {
-    //agarro cualquier patron de la lista de patrones
     const patron = patronesDelNivel.anyOne()
-    if (game.hasVisual(patron.visuales().anyOne())){ // encapsular condicion
-      self.mostrarNuevoPatron()
+    // el patron esta activo?
+    if (!patron.estaDisponible()){ 
+      self.mostrarNuevoPatron() // recursion hasta encontrar uno que no este activo
     }
     else{
-      patron.startPatron()
+      patron.startPatron() // se inicia startPatron() y cambia el estado del patron a no disponible.
     }
   }
 
-  method añadirPersonaje() {          // invoca al lille.v
-    configurarJuego.agregarPersonaje()
-    configurarJuego.agregarPuntos()
+  method tiempoDeCaidaObj(){
+    return dificultad.tiempoDeAparicion() / 0.27
+  }
+
+  method agregarObjetos() {
+    if(!objetosDelNivel.isEmpty()){
+      game.onTick(self.tiempoDeCaidaObj(), "agregarObjeto", {self.aparecerObjeto()})
+    }
+  }
+  method aparecerObjeto(){
+    const objeto = objetosDelNivel.anyOne()
+    objeto.tiempoDeCaida(dificultad.tiempoDeCaida())
+    objeto.invocar()
   }
   method sumarPuntos() {
     game.onTick(1000, "puntosPorSegundo", {lille.obtenerPuntos(10)})
   }
-  method cambiarEscenario(){
-    escenario.image("backgr.gif")
-  }
-  method inicializar() {        //inicializador del nivel.
+  override method inicializar() {        //inicializador del nivel.
     self.cambiarEscenario()
-    self.añadirPersonaje()
+    self.agregarLille() 
     self.startSetup()
     game.schedule(5000,{
       self.comenzarACaer() 
       self.sumarPuntos()
+      self.agregarObjetos()
     })
   }
 }
 
-class Batalla inherits Nivel(setupDelNivel = #{}){
+class Batalla inherits NivelLore{
   const boss 
-  override method cambiarEscenario(){
-    escenario.image("escenario.jpeg")
-  }
   override method inicializar() {
-    self.cambiarEscenario()
-    self.añadirPersonaje()
+    super()
+    self.agregarLille()
     //game.addVisual(lille)
     game.addVisual(boss)
-    game.schedule(3000, {boss.atacar()})
+    game.schedule(3000, {boss.iniciarAtaque()})
     game.onCollideDo(boss, {objeto => objeto.chocarConEfecto(boss)})
   }
+  override method clearLevel(){
+    super()
+    boss.ocultar()
+  }
 }
+object finalJuego inherits NivelLore(nivelActual = finalJuego, fondo = "conclusion.jpeg", siguienteNivel = portada){
+  override method inicializar(){
+    super()
+    game.removeVisual(lille)
+    game.removeVisual(marcadorDeVida)
+    game.stop()
+  }
+}
+
+const pantallaDerrota = new NivelLore(
+  fondo = "pantallaDerrota.gif",
+  nivelActual = pensamientoPreBatalla,
+  siguienteNivel = fallToPieces.nivelActual()
+)
+
+const portada = new NivelLore(
+  fondo = "portada.gif",
+  nivelActual = portada,
+  siguienteNivel = carta
+)
+
+const carta = new NivelLore(
+  fondo = "cartaInicio.jpeg",
+  nivelActual = carta,
+  siguienteNivel = tutorial
+)
 
 const tutorial = new Nivel(
   nivelActual = 0,
   dificultad = dificultadBaja,
-  objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,u,u,_,_,p],
-                     [_,u,a,u,_,p],
-                     [p,_,u,_,a,p],
-                     [_,u,u,_,_,a],
-                     [_,p,u,_,u,_],
-                     [_,p,p,p,p,_],
-                     [_,a,_,a,_,a]},
+  objetosDelNivel = #{escudoMagico},
+  setupDelNivel = #{ [p,r,r,_,_],
+                     [_,r,l,r,_],
+                     [p,_,r,_,l],
+                     [_,r,r,_,_],
+                     [_,p,r,_,r],
+                     [_,p,p,p,p],
+                     [_,l,_,l,_]},
                      
   siguienteNivel = nivel1
 )
 
 const nivel1 = new Nivel(
   nivelActual = 1,
-  dificultad = dificultadAlta,
-  objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,l,l,_,_,p],
-                     [_,l,l,l,_,p],
-                     [p,_,l,_,a,p],
-                     [_,l,l,_,_,l],
-                     [_,p,l,_,l,_],
-                     [_,p,p,p,p,_],
-                     [_,a,_,a,_,a]},
+  dificultad = dificultadMedia,
+  objetosDelNivel = #{pocion,escudoMagico,piedraPreciosa},
+  setupDelNivel = #{ [p,l,l,_,_],
+                     [_,l,l,l,_],
+                     [p,_,l,_,p],
+                     [_,l,l,_,_],
+                     [_,r,l,_,l],
+                     [_,p,r,r,p],
+                     [_,p,_,p,_]},
                      
   siguienteNivel = nivel2
 )
-
-
-const nivel2 = new Batalla(
+const nivel2 = new Nivel(
   nivelActual = 2,
-  dificultad = dificultadBaja,
-  objetosDelNivel = #{e,b,d},
-  boss = wizardd,
+  dificultad = dificultadMedia,
+  objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
+  setupDelNivel = #{ [p,l,l,_,_],
+                     [_,l,l,l,_],
+                     [p,_,l,_,_],
+                     [_,l,l,_,_],
+                     [_,p,l,_,l],
+                     [_,r,r,p,p],
+                     [p,_,_,_,_],
+                     [_,l,_,_,l],
+                     [_,p,_,p,l],
+                     [_,_,p,r,_],
+                     [_,r,_,r,_]},
 
   siguienteNivel = nivel3
 )
 const nivel3 = new Nivel(
   nivelActual = 3,
-  dificultad = dificultadAlta,
-  objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,l,l,_,_,p],
-                     [_,l,l,l,_,p],
-                     [p,_,l,_,_,p],
-                     [_,l,l,_,_,l],
-                     [_,p,l,_,l,_],
-                     [_,p,p,p,p,_],
-                     [p,_,_,_,_,p],
-                     [_,l,_,_,l,_],
-                     [_,p,_,p,l,_],
-                     [_,_,p,p,_,_],
-                     [_,a,_,a,_,a]},
-
-  siguienteNivel = nivel4
-)
-const nivel4 = new Nivel(
-  nivelActual = 4,
   dificultad = dificultadMedia,
-  objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,l,l,_,_,p],
-                     [_,l,l,l,_,p],
-                     [p,_,l,_,_,p],
-                     [_,l,l,_,_,l],
-                     [_,p,l,_,l,_],
-                     [_,p,p,p,p,_],
-                     [p,_,_,_,_,p],
-                     [_,l,_,_,l,_],
-                     [_,p,_,p,l,_],
-                     [_,_,p,p,_,_],
-                     [_,a,_,a,_,a],
-                     [p,_,l,l,_,p],
-                     [p,p,_,_,p,p],
-                     [_,p,_,p,l,_],
-                     [_,p,p,p,_,l],
-                     [a,a,_,a,a,a]
+  objetosDelNivel = #{pocion,escudoMagico,diamanteValioso},
+  setupDelNivel = #{ [p,l,l,_,_],
+                     [_,l,l,l,_],
+                     [p,_,l,_,_],
+                     [_,l,l,_,_],
+                     [_,p,l,_,l],
+                     [_,p,p,p,p],
+                     [p,_,_,_,_],
+                     [_,l,_,_,l],
+                     [_,p,_,p,l],
+                     [_,_,p,p,_],
+                     [_,l,_,r,_],
+                     [p,_,l,l,_],
+                     [p,p,_,_,p],
+                     [_,p,_,p,l],
+                     [_,p,p,p,_],
+                     [l,l,_,r,r],///
+                     [_,p,_,p,l],
+                     [_,_,p,p,_],
+                     [_,r,_,r,_],
+                     [p,_,l,l,_],
+                     [p,p,_,_,p],
+                     [_,p,_,p,l],
+                     [_,p,p,p,_],
+                     [r,r,_,r,r]
                      },
                     
 
-  siguienteNivel = nivel5
+  siguienteNivel = nivel4
 )
 
-const nivel5 = new Nivel(
-  nivelActual = 5,
+const nivel4 = new Nivel(
+  nivelActual = 4,
   dificultad = dificultadMedia,
-  objetosDelNivel = #{e,b,d},
-  setupDelNivel = #{ [p,l,l,_,_,p],
-                     [_,l,l,l,_,p],
-                     [p,_,l,_,_,p],
-                     [_,l,l,_,_,l],
-                     [_,p,l,_,l,_],
-                     [_,p,p,p,p,_],
-                     [p,_,_,_,_,p],
-                     [_,l,_,_,l,_],
-                     [_,p,_,p,l,_],
-                     [_,_,p,p,_,_],
-                     [_,a,_,a,_,a],
-                     [p,_,l,l,_,p],
-                     [p,p,_,_,p,p],
-                     [_,p,_,p,l,_],
-                     [_,p,p,p,_,l],
-                     [a,a,_,a,a,a]
+  objetosDelNivel = #{pocion,escudoMagico,diamanteValioso,piedraPreciosa},
+  setupDelNivel = #{ [p,l,l,_,_],
+                     [_,l,l,l,_],
+                     [p,_,l,_,_],
+                     [_,l,l,_,_],
+                     [_,p,l,_,l],
+                     [_,p,p,p,p],
+                     [p,_,_,_,_],
+                     [_,l,_,_,l],
+                     [_,p,_,p,l],
+                     [_,_,p,p,_],
+                     [_,r,_,r,_],
+                     [p,_,l,l,_],
+                     [p,p,_,_,p],
+                     [_,p,_,p,l],
+                     [_,p,p,p,_],
+                     [r,r,_,r,r]
                      },
 
-  siguienteNivel = final
+  siguienteNivel = primerBatalla
 )
-const prueba = new Nivel(
-    nivelActual = 0,
-    siguienteNivel = null, 
-    setupDelNivel = #{},
-    objetosDelNivel = #{},  
-    dificultad = dificultadBaja
-    )
 
-object final {
-  const property position = game.origin()
-  const property image = "fintest.jpg"
-  method inicializar() {
-    game.stop()
-  }
-}
+const primerBatalla = new Batalla(
+  fondo = "fondoBosque.jpeg",
+  nivelActual = primerBatalla,
+  boss = wizard,
+  siguienteNivel = pensamientoPreBatalla
+)
+const pensamientoPreBatalla = new NivelLore(
+  fondo = "pensamientosPreBatalla.jpeg",
+  nivelActual = pensamientoPreBatalla,
+  siguienteNivel = segundaBatalla
+)
 
+
+const segundaBatalla = new Batalla(
+  fondo = "escenario.jpeg",
+  nivelActual = nivel2,
+  boss = juan,
+  siguienteNivel = finalJuego
+)
