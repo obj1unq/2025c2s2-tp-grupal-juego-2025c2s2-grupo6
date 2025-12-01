@@ -96,6 +96,7 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
       //game.stop()
     }else{
       puntosObtenidos += puntos
+      barraProgreso.marcarBarrita()
     }
   }
   /*
@@ -183,6 +184,55 @@ object marcadorDeVida {
       } else {
         image = "vida 0.png"
       }
+  }
+}
+
+class Barrita {
+  var property image
+  var property position = game.at(9, 1)
+  method color()
+  method puntosARevisar()
+
+  method marcarBarrita() {
+      if(self.puntosARevisar() == 200){
+      image = "progreso" + self.color() + "100.png"
+    } else if(self.puntosARevisar().between(175, 199)){
+      image = "progreso" + self.color() + "90.png"
+    } else if(self.puntosARevisar().between(160, 174)){
+      image = "progreso" + self.color() + "80.png"
+    } else if(self.puntosARevisar().between(130, 159)){
+      image = "progreso" + self.color() + "70.png"
+    } else if(self.puntosARevisar().between(100, 129)){
+      image = "progreso" + self.color() + "60.png"
+    } else if(self.puntosARevisar().between(80, 99)){
+      image = "progreso" + self.color() + "50.png"
+    } else if(self.puntosARevisar().between(50, 79)){
+      image = "progreso" + self.color() + "40.png"
+    } else if(self.puntosARevisar().between(30, 49)){
+      image = "progreso" + self.color() + "30.png"
+    } else if(self.puntosARevisar().between(21, 29)){
+      image = "progreso" + self.color() + "20.png"
+    } else if(self.puntosARevisar().between(1, 20)){
+      image = "progreso" + self.color() + "10.png"
+    } else {
+      image = "progreso" + self.color() + "0.png"
+    }
+  }
+
+}
+
+object barraProgreso inherits Barrita(image = "progreso" + self.color() + "0.png") {
+   override method puntosARevisar() = lille.puntosObtenidos()
+   override method color() {
+    return "amarillo"
+  }
+}
+
+
+object barraVidaEnemigo inherits Barrita(image = "progreso" + self.color() + "0.png") {
+   override method puntosARevisar() = wizardd.vida()
+   override method color() {
+    return "rojo"
   }
 }
 

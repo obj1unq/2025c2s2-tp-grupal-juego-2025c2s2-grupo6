@@ -17,6 +17,7 @@ object configurarJuego {
       game.addVisual(lille)
       game.onCollideDo(lille, {objeto => objeto.chocarConEfecto(lille)})
       game.addVisual(marcadorDeVida)
+      game.addVisual(barraProgreso)
     }
   }
   method agregarPuntos() {
