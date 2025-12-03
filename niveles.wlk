@@ -69,7 +69,7 @@ class Nivel inherits NivelLore (fondo = "backgr.gif"){
     pat.añadirObstaculos(setup)
     patronesDelNivel.add(pat)
   }
-  method mostrarNuevoPatron() {
+  method mostrarNuevoPatron() {   //filtrar patrones y usar anyone.
     if(!patronesDelNivel.isEmpty()){
       self.llamarPatron()
     }
@@ -77,10 +77,8 @@ class Nivel inherits NivelLore (fondo = "backgr.gif"){
   method llamarPatron() {
     const patron = patronesDelNivel.anyOne()
     // el patron esta activo?
-    if (!patron.estaDisponible()){ 
-      self.mostrarNuevoPatron() // recursion hasta encontrar uno que no este activo
-    }
-    else{
+    if (patron.estaDisponible())
+    {
       patron.startPatron() // se inicia startPatron() y cambia el estado del patron a no disponible.
     }
   }

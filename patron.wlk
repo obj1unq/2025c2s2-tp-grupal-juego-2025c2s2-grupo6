@@ -26,7 +26,7 @@ class Patron {
       visuales.add(obs)
     })
   }
-
+  
   method startPatron() {
     estaDisponible = false // El patrón no esta disponible
     self.agregarVisuales()

@@ -136,9 +136,12 @@ object lille inherits Personaje(position = game.at(3,1), image = "gifg.gif", vid
 class Ataque {
   const property hechizosUsados = #{}
   method atacar(personajeAtacante) {
-    if (game.getObjectsIn(personajeAtacante.position().down(1)).isEmpty()){
+    if (self.puedeAtacar(personajeAtacante)){
       self.invocarAtaque(personajeAtacante)
     }
+  }
+  method puedeAtacar(personajeAtacante){
+    return game.getObjectsIn(personajeAtacante.position().down(1)).isEmpty()
   }
   method detenerAtaque() {
     hechizosUsados.forEach({hechizo => hechizo.ocultar()})
